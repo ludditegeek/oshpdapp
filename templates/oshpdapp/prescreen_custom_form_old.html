@@ -1,9 +1,20 @@
-		
 {% extends "oshpd_base.html" %}
 
 {% block content %}
 
 <title>{% if add %} Add new {% else %}Edit selected {% endif %} patient; </title>
+
+<h3>Patient Abstraction Prescreen - Complete before detailed abstraction</h3>
+
+<fieldset>
+<legend>Custom Prescreen Detail Entry Form</legend>
+<div>
+Hand Coded to create specific classes for various data driven fields.
+Does not use default 'form.as_' to create form. Ajax calls will
+<br/>Note use of fieldsets for page layout
+<br/> Revised: 4/27/2010 
+</div>
+</fieldset>
 
 <form action="" method="post">
 
@@ -16,7 +27,7 @@
 <fieldset>
 
 <legend>Prescreen Data for Selected Patient </legend>
- <table border ="1" >
+  <table border ="1" class="frm_prescreen">
       <tr>
         <th><label for="id_absstatus">Abstraction Status</label></th>
         <td colspan="7">{{form.absstatus}}</td>
@@ -24,48 +35,46 @@
       
       <tr>
         <th><label for="id_ssn">Patient SSN:</label></th>
-        <td colspan="3" id="id_ssn">{{form.ssn}}</td>     
-        <th colspan="1"><label for="id_bthdate">Date Of Birth:</label></th>
-        <td colspan="3">{{form.bthdate}}</td>
+        <td>{{form.ssn}}</td>
+        <th><label for="id_bthdate">Date Of Birth:</label></th>
+        <td>{{form.bthdate}}</td>
       </tr>
-      
 
       <tr>
         <th><label for="id_admtdate">Admission Date:</label></th>
-        <td colspan="3">{{form.admtdate}}</td>
+        <td>{{form.admtdate}}</td>
         <th><label for="id_dschdate">Discharge Date:</label></th>
-        <td colspan="3">{{form.dschdate}}</td>
+        <td>{{form.dschdate}}</td>
       </tr>
 
       <tr>
         <th><label for="id_ssncrct">SSN Correct:</label></th>
-        <td colspan="3">{{form.ssncrct}}</td>
+        <td>{{form.ssncrct}}</td>
         <th><label for="id_bthdatecrct">DOB Correct:</label></th>
-        <td colspan="3">{{form.bthdatecrct}}</td>
+        <td>{{form.bthdatecrct}}</td>
       </tr>
-      
+
       <tr>
         <th><label for="id_admsource">Admit Source:</label></th>
-        <td colspan="3">{{form.admsource}}</td>
+        <td>{{form.admsource}}</td>
         <th><label for="id_source2">Licencing Site:</label></th>
-        <td colspan="3">{{form.source2}}</td>
+        <td>{{form.source2}}</td>
       </tr>
       <tr>
         <th><label for="id_hospid">Hospital ID:</label></th>
-        <td colspan="3">{{form.hospid}}</td>        
+        <td>{{form.hospid}}</td>        
+      </tr>
+
+      <tr>
         <th><label for="id_hospname">Hospital Name:</label></th>
-        <td colspan="3">{{form.hospname}}</td>        
+        <td>{{form.hospname}}</td>        
       </tr>
 
       <tr>
         <th><label for="id_disp">Destination on Discharge:</label></th>
         <td colspan="8" size ="50">{{form.disp}}</td>        
-      </tr> 
-      
-      <tr>
-        <td colspan="8">Documentation Source(s) - Check all applicable</label></th>
-      </tr>           
-                    
+      </tr>
+
       <tr>
         <th><label for="id_srcpapermr" class="chkclass" >Paper MR:</label></th>
         <td>{{form.srcpapermr}}</td>        
@@ -76,14 +85,16 @@
         <th><label for="id_srcscanned" class="chkclass" >Scanned:</label></th>
         <td>{{form.srcscanned}}</td>                
       </tr>
-           
-       <tr>
+
+      <tr>
         <th><label for="id_memo">Memo:</label></th>
         <td colspan="7" class="memoclass">{{form.memo}}</td>
-      </tr>     
-      
- </table>
- </fieldset>
+      </tr>
+</fieldset>
+    </tbody>
+  </table>
+</fieldset>
+
 
 <p><input type="submit" name = "submit" value="Save Changes" /></p>
 
