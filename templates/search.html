@@ -1,0 +1,71 @@
+{% extends "oshpd_base.html" %}
+{% block external %}
+
+  <script type="text/javascript"
+    src="/site_media/parseuri.js"></script>
+
+  <script src="http://jsload.net/init">
+	jquery
+   </script>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"
+	  type="text/javascript"></script> 
+
+  <script type="text/javascript"
+    src="/site_media/jquery.js"></script>
+
+  <script type="text/javascript"
+    src="/site_media/gen_search.js"></script>
+
+  <link rel='stylesheet' type="text/css" media="screen" href="/site_media/switch.css"/>
+
+{% endblock %}
+{% block title %}Search Patients{% endblock %}
+{% block head %}Search Patients{% endblock %}
+{% block content %}
+
+    {% if msgs %}          
+         <p style='color:red';'> {{msgs}}</p>         
+    {% endif %}
+
+<p/>
+    {% if error %}
+        <p style="color: red;">Please submit a search term.</p>
+    {% endif %}
+
+<fieldset>
+<legend>Search by Patient SSN</legend>
+<form id="search-form" class = "search" method="get" action=".">
+
+    {% ifequal caller 'dx' %}
+         Find patient diagnostic, procedure and Ecode entries
+    {% endifequal %}
+
+    {% ifequal caller 'pr' %}
+        Search for patients with pending prescreen processing.
+     {% endifequal %}
+ <p/> 
+  <table class="searchtable">
+   <tr>
+   <td><input id="id_query" type="text" name="query"  /></td>
+   <td><input type="submit" value="search"</td>
+   </tr>   
+  </table> 
+</form>
+</fieldset>
+
+<div id="search-results">
+  {% if show_results %}
+	  {% ifequal l_type  'DXLIST' %}	
+	    {% include "dx_list.html" %}
+	  {% endifequal %}
+	  {% ifequal l_type  'PRLIST'%}	
+	    {% include "prescreen_list.html" %}
+	  {% endifequal %}
+	  {% ifequal l_type  'ABLIST'%}	
+	    {% include "abstract_list.html" %}
+	  {% endifequal %}		
+  {% endif %}
+</div>
+
+{% endblock %}

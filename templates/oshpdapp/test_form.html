@@ -1,0 +1,54 @@
+{% extends "oshpd_base.html" %}
+<html>
+<head>
+
+ <link rel='stylesheet' type="text/css" media="screen"
+	href="/site_media/switch.css"/>
+</head>
+
+<form action="" method="post">
+
+
+{% block content %}
+ 
+<div id="d1" style="color:#00FF00">
+<table border="1">
+<tr>
+	<td>{{ form.name.label  }}</td>
+	<td>{{ form.name  }}</td>
+	<td></td>
+	<td></td>
+</tr>
+
+	<td>{{ form.c1.label  }}</td>
+	<td>{{ form.c1  }}</td>
+	<td>{{ form.c2.label  }}</td>
+	<td>{{ form.c2  }}</td>
+</table>
+</div>
+
+<p/>
+
+<div id = "d2" style="color:#00FFFF">
+<table >
+<tr>
+	<td>{{ form.c3.label  }}</td>
+	<td>{{ form.c3  }}</td>
+	<td>{{ form.c4.label  }}</td>
+	<td>{{ form.c4  }}</td>
+</tr>
+</table>
+</div>
+
+<p/>
+
+<input type="submit" value="Submit" />
+{% endblock %}
+
+{% block footer %}
+<p> This site powered by Django</p>
+{% endblock %}
+
+
+
+</html>

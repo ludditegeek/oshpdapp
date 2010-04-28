@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html lang="en">
+<head>
+    <title>{% block title %} Django OSHPD Demo {% endblock %}</title>
+    <link rel="stylesheet" href="/site_media/style.css"  media="screen" type="text/css"/>
+    <link rel="stylesheet"  href="/site_media/switch.css" media="screen" type="text/css" />
+    <script type="text/javascript"
+	src="/site_media/jquery.js"></script>
+    {% block external %} {%  endblock %}
+   </head>
+
+   <body>
+    <div id="masthead">
+	<h1>UCSF/OSHPD CD - Django Data Collection Application</h1>
+    </div>
+
+<div id="sidebar_a" >
+<h3>Menu</h3>
+<ul>
+	    {% if user.is_authenticated%}welcome {{ user.username}}
+	    <li><a href ="/logout">logout</a></li>
+	    {%  else %}
+	    <li><a href ="/login">login</a></li>
+	    {%  endif %}
+	<li><a href ="/">home</a></li>
+	<li><a href ="/gen_search">Search</a></li>
+	<li><a href ="/prsearch">Prescreen Processing</a></li>
+	<li><a href ="/abstract">Abstractions Pending</a></li>
+	<li><a href ="/dxsearch">Diagnoses Processing</a></li>
+    <li><a href ="/homepage">LGApp</a></li>
+
+</ul>
+</div>
+
+<div id="content" >
+
+    {% block content %}{% endblock %}    
+    {% block main_content %}{% endblock %}    
+    {% block extra_body %}{% endblock %}
+</div>
+<div id="footer" >
+
+    <p><Django Powered></p>
+    {% block footer %}{% endblock %}
+
+</div>
+
+</body>
+</html>

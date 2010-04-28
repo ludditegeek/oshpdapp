@@ -1,0 +1,29 @@
+
+
+{% block content %}
+
+<ul>
+    <table  border="1">
+	<tr>  
+	   <td>id</td>
+           <td>dxtype</td> 
+           <td>dxcodeicd9dscr</td> 
+           <td>dxcrt</td>
+           <td colspan=2>Modify</td>
+	</tr>
+        {% for item in dxcodes %}
+        <tr>
+           <td>{{ item.id }}</td>
+           <td>{{ item.dxtype }}</td> 
+           <td>{{ item.dxcodeicd9dscr }}</td> 
+           <td>{{ item.dxcrt }}</td> 
+           <td><a href="/dx/{{ item.id }}">Edit</a></td>
+ 	</tr>
+        {% endfor %}
+    </>
+    </table>
+    <p/>
+          <td><a href="/dxadd/{{ patient }}">Add New Dx Code</a></td>
+<ul>
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "lg_base.html" %}
+
+{% block title %} Google App Engine Data Browser{%endblock %} 
+{%block mainpanel %}
+	<!-- YOUR DATA GOES HERE - Start -->
+<p> </p><h2>Overview</h2> 
+	<p>For the past few months I have been working on a project to browse
+and/or extract data from the Google App Engine Datastore. As you know the
+datastore uses the google 'Big Table' under the hood and data is essentially
+stored as sets of Name/Value pairs. While this allows for scalability it
+presents a problem for anyone who want to extract the underlying application
+data and perform any offline data analysis/reporting. At the time of writing
+(May 2009) there are no Google tools (AFAIK) to support this - (however I would
+expect to see some enhancements in the near future to overcome these limitations).</p>
+<p>
+I created the Data Browser/Data Download GUI utility described here as a personal research
+project to address this problem. Basically the program allows users to import
+app engine data into a MySql database. If necessary, tables are created
+dynamically in the target database - the table structure is based on the GAE
+model definition. As an added benefit the data is also converted to a set of csv
+files suitable for processing in a spreadsheet or external reporting tool. 
+</p>
+<h2>Technical Notes</h2> 
+<p>
+The implementation consists of a Python GUI application built using PyQt GUI controls - so
+this can run on any platform that has the PyQt library (and MySql) installed. 
+Under the hood interaction with the GAE is via remote API calls.  In order to
+retrieve large results sets from the GAE data is fetched in multiple batches -
+required since Google throttles access to app engine resources. The application
+is multi threaded - a separate data retrieval thread is run for each data
+model/entity kind defined in the datastore.
+</p><p>
+The application also requires access to the Python class definitions for the
+underlying GAE datamodels. The browser app provides a tabbed display control
+that allows users to view/compare the GAE and SQL versions of the data.  
+Here is a brief summary of the main features of the application:
+</p>
+
+<ul>
+<li>View Model Classes/Definitions</li>
+<li>View Model Data</li>
+<li>Display running totals and progress of download process</li>
+<li>Download Data from GAE to target database (MySqlDB)</li>
+<li>View SQL (MySql) data</li>
+<li>Create MySql target tables (if not already defined)</li>
+<li>Download data to csv/text files</li>
+</ul>
+
+<h2>Next Steps/Future Directions</h2> 
+
+<p> At this point the program is basically an early 'alpha' version - so it's
+definitely not ready for 'prime time'.  However I'd like to get feedback
+regarding additonal/future features/requirements and/or hear from anyone who
+could use a tool like this on an existing project.
+(<a href="http://theludditegeek.com/php/LG_Email.php">Your
+	comments/feedback are welcome</a>).  Some ideas for possible
+enhancements include adding a generic 'Search' capability; making the export
+more granular - (e.g. allow export sets/subsets of search results to external
+repositories (csv files, sql databases etc.), allow user to select the list of
+datamodels to be processed - currently all datamodels are processed; options to
+update or replace target data during download - the list goes on).  </p>
+
+<h2>Issues/Challenges</h2> 
+<p> Some issues I've run into during this development are related the difficulty
+in getting app model metadata from the google app engine (e.g. to date I have
+not found a good way to get an item count of the current entities in the
+datastore - e.g. equivalent to 'Select Count (*) from TableName' in SQL). It will
+be interesting to see if Google has plans to enhance the GAE API to add meta
+data queries support.  </p>
+
+<h2>Application Screenshots</h2> 
+<p>Below is a set of screen shots that show the application in action. For demo
+purposes I have created 3 data models (employee, employee department and
+employee salary) in the datastore and populated them with test data.  Initially
+the tables in the Sql database are empty.  Each successive screen shows various
+views of the download process. For completeness I have also included the view
+provided by the Googles Web admin console (Screen 1) so you can compare this
+with my utility.  (Note that the Google App Engine Console is limited to data
+browsing - no data export capability is provided). I have also included a CSV
+view of the downloaded data.
+</p><p>
+Screen 2 shows the initial GUI display on application startup. The layout
+consists of separate panels for: 1) summary SQL table stats; 2) GAE Data Model
+summary stats; 3) Data Model Definition for selected summary item; 4) detailed
+data viewer panel with separate tabs for the DataStore and SQL table data.
+</p><p>
+
+The data download/data export process is multi threaded - a separate thread is
+created for each datamodel being downloaded. Screen 3 illustrates the concurrent
+processing of multiple threads - the partial update of the database tables can
+be seen on panel 1 (the display is continually refreshed during the download
+process).  The remaining screens show the results of the completed download
+process and the exported csv data.  </p>
+
+<p> <h2>Screen 1 -	Google's App Engine Console View</h2> <img
+src="/media/GAEBrowser_WebViewer.gif" height="478" width="740" class="scrnshot"/> 
+</p>
+<p> <h2>Screen 2 - GAE Browser/Data Export Tool</h2> <img
+src="/media/GAEBrowser_Screen1.gif" height="478" width="740" class="scrnshot"/>
+</p>
+<p> <h2>Screen 3 - Intermediate Process - Multiple D/L Threads Running</h2>
+<img src="/media/GAEBrowser_Screen2.gif" height="478" width="740"
+class="scrnshot"/> </p>
+<p> <h2>Screen 4 - Processing Completed - Statistics Updated</h2> <img src="/media/GAEBrowser_Screen3.gif" height="478"
+width="740" class="scrnshot"/> </p>
+<p> <h2>Screen 5 - Processing Completed - SQL Data View</h2> <img src="/media/GAEBrowser_Screen4.gif" height="478"
+width="740" class="scrnshot"/> </p>
+<p> <h2>Screen 6 - Excel Data View of csv download</h2> <img
+src="/media/GAEBrowser_ExcelCSV.gif" height="478" width="740" class="scrnshot"/>
+</p>
+<!-- YOUR DATA GOES HERE - End -->				
+{% endblock %}
+
+

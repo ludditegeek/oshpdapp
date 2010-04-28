@@ -1,0 +1,100 @@
+/*LG Custom Styles - Created by Brendan Campbell
+The following classes are added dynamically by javascript,
+and their use should be avoided in the markup */
+p {
+font-size:100%;
+line-height:150%;
+}
+
+	html {
+		height: 100%;
+		background-color: #D2FFD2;
+	}	
+	body {
+		height: 100%;
+		background-color: #D2FFD2;		
+	}
+	
+	hr {
+		border:none;
+		height: 1px;
+		width: 90%;
+		color: #000000;
+		background-color: #000000;
+		padding: 0px ;
+	}
+	
+/*
+		border: 3px ridge #000000;
+*/
+	#hd {
+			padding-bottom: 0px;
+ 			border: 3px ridge #D2FFD2;
+			-moz-border-radius: 10px;		
+	}
+	
+	#footer_v0
+	{
+		position: absolute;
+		bottom: 0;
+	}
+	#footer {
+		position: relative;  /* Needed for Safari */
+		padding: 10px ;
+		background-color: #D2FFD2;
+		width: 100%;
+		font-size:100%;
+		line-height:150%;				
+		text-align: center;
+	}
+
+#footer h3 {
+	padding-bottom: 0;
+}
+
+/*
+		border: 1px solid #000000;
+*/	
+	#mainpanel {
+		padding: 20px 30px 0px 0px;
+	}		
+	
+  #sidebar {
+		padding: 10px 20px 10px 20px;
+		background-color: MintCream;
+	  background-repeat: repeat-x;
+		border: 3px ridge #D2FFD2;
+		-moz-border-radius: 10px;
+	}	
+
+/*	
+			padding: 0.4em 0 0.4em 0.5em;
+*/
+	#sidebar ul a:hover {
+		background-color: #D2FFD2;
+		display: block;
+		text-decoration: none;
+		border: 1px solid #000000;
+		padding: 0 0 0 0.5em;
+		
+
+	}
+	
+/*	
+	background-image: url(images/sidebar_gradient_3.png);
+		background-color: MintCream;
+	#smallbox {
+	background-image: url(images/sidebar_gradient_2.png);
+	background-repeat: repeat-x;
+	float: right;
+	margin-right: 20px;
+	width: 220px;
+	border:3px ridge #000000;
+}
+*/	
+		
+	#content {
+		padding: 30px;
+		background-color: #D2FFD2;
+	}
+	

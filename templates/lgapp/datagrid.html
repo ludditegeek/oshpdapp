@@ -1,0 +1,125 @@
+{% extends "lg_base.html" %}
+{% block title %} Custom DataGrid {% endblock %}
+{%block mainpanel %}
+<!-- Web site js files -->
+<script type="text/javascript" src="/media/windowheight.htm"></script>
+<link rel="stylesheet" type="text/css" href="/media/SyntaxHighlighter.css">
+<script language="javascript" src="/media/shCore.js"></script>
+<script language="javascript" src="/media/shBrushAS3.js"></script>
+<script language="javascript" src="/media/shBrushMxml.htm"></script>
+<script language="javascript" src="/media/shBrushXml.js"></script>
+<script language="javascript" src="/media/shBrushJScript.js"></script>
+	<script language="javascript">
+		dp.SyntaxHighlighter.ClipboardSwf = 'http://theludditegeek.com/includes/SyntaxHighlighter/Scripts/clipboard.swf';
+		dp.SyntaxHighlighter.HighlightAll('code');
+	</script>
+
+	<!-- YOUR DATA GOES HERE - Start --> 
+	<h2> Custom Datagrid</a></h2>
+<p>	
+	I wanted to provide a colour coded/dashboard like display to users. 
+The idea is to highlight any datagrid cells containing date values where the data is considered stale. The value in the cell is 
+	compared with the current date. If the date difference (in days) is greater than the specified threshold,
+	 the cell's background colour is  set to the specified 'thresholdColor'. Otherwise the default colour is used.
+	 In my example I have arbitrarily set threshold values for 30, 90 and 365 days. 
+	
+The code snippets below show how these features are implemented - <a href="LGApps/DataGridDemo/CustomDataGrid.html">Click here to see this in action</a></.
+</p>
+
+
+
+<textarea name="code" class="as3">
+// CustomDataGrid.mxml - Datagrid/Datacolumn property definition
+
+<mx:Panel title="DataGrid Control with custom rendering
+	Items in red represent stale data 
+	(based on elapsed day count since current date)" 
+	height="225" width="850" 
+    paddingTop="10" paddingLeft="10" paddingRight="10">
+<mx:DataGrid dataProvider="{ptStatus}" paddingTop="0" 
+	paddingBottom="0" height="100%" 
+	  verticalAlign="middle" >
+	<mx:columns>
+	<mx:DataGridColumn headerText="Patient ID" dataField="ptid"/>
+	<mx:DataGridColumn headerText="Last Name" dataField="lastname"/>
+	<local:BackgroundColorColumn 
+			="Last Lab Test (30 days)" 
+			dataField="lablast" threshhold="30" 
+			itemRenderer="BackgroundColorRenderer" 
+			threshholdColor="0xFF0000"  width="200"/>
+	<local:BackgroundColorColumn 
+			="Last Surgery Date (365 days)" 
+			dataField="surgery" threshhold="365"  id="surgerycol"
+			itemRenderer="BackgroundColorRenderer" 
+			threshholdColor="0xFF0000" width="200" />	
+	<local:BackgroundColorColumn 
+			headerText="Last FollowUp Date(90 days)"
+			 dataField="fulast" threshhold="90" 
+			itemRenderer="BackgroundColorRenderer" 
+			threshholdColor="0xFF0000" width="200"/>				
+</mx:columns>
+</mx:DataGrid>
+</mx:Panel>
+
+</textarea>
+</p>
+<p>BackgroundColorRenderer class -  extends DataGridItemRenderer - Computes date difference in days and sets the 
+cell backgound colour to either the default colour or the 'thresholdColor'.</p>
+
+<textarea name="code" class="as3">	
+// BackgroundColorRenderer.as
+
+if (dataGrid.isItemSelected(data)
+	 || dataGrid.isItemHighlighted(data))
+{
+	// clear the background so you can see 
+	// the selection/highlight colors
+	background = false;
+	return;
+}
+var column:BackgroundColorColumn = 
+					dataGrid.columns[dgListData.columnIndex];		
+// Check date within range - highlight stale date values 
+// threshold indicates day count
+var dayCount:int = int (column.threshhold);
+var str:String = data[column.dataField];
+var now:Date = new Date()
+var strArray:Array = str.split('/');
+var dateval:Date = new Date (str);  //pass string
+// Compute # msecs on 30 days (1000 *60*60) *24 *30
+var msecthreshold:Number = dayCount * millisecondsPerDay;
+var tnow:Number = now.getTime();
+var tprev:Number = dateval.getTime();
+var ddiff:Number = tnow-tprev;
+var days:Number = ddiff/millisecondsPerDay;
+var datediff:Number = now.getTime() - dateval.getTime();
+
+switch (datediff >= msecthreshold){
+	case true:	
+		background = true;
+		backgroundColor = column.threshholdColor;
+		break;				
+	default:					
+		background = true;
+		backgroundColor =  0x4BB74C;  //Default colour
+		break;				
+}
+</textarea>
+</p>
+<p>
+	<!--
+-->	
+	
+	<!-- YOUR DATA GOES HERE - End -->	
+	<!-- End mainpanel div-->
+
+	<script language="javascript">
+		dp.SyntaxHighlighter.ClipboardSwf = 'http://theludditegeek.com/includes/SyntaxHighlighter/Scripts/clipboard.swf';
+		dp.SyntaxHighlighter.HighlightAll('code');
+	</script>
+	
+		
+{% endblock %}
+
+
+

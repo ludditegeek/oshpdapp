@@ -1,0 +1,107 @@
+{% extends "oshpd_base.html" %}
+
+{% block external %}
+<script type="text/javascript"	src="/site_media/utils.js">
+</script>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript"
+	src="/site_media/jquery.autocomplete.js"></script>
+
+<link rel="stylesheet"  href="/site_media/jquery.autocomplete.css" media="screen" type="text/css" />
+
+{% endblock  %}
+
+
+{% block content %}
+
+
+<style>
+fieldset {
+width: 500px;
+}
+.testSubject {
+border: 2px solid black;
+background-color: white;
+padding: 8px;
+}
+.matched {
+border: 4px solid maroon;
+background-color: khaki;
+}
+button {
+width: 200px;
+}
+
+legend {
+font-size:large;
+font-weight: bold;
+}
+</style>
+
+<fieldset>
+<legend>Custom Diagnosis Detail Entry Form</legend>
+<div>
+Hand Coded to create specific classes for various data driven fields.
+Does not use default 'form.as_' to create form. Ajax calls will
+conditionally displayrelevant DX; Proc or Ecode Fields based on drop down selection. Need to
+create Ajax calls here to perform required JS calls.
+<br/>Note use of fieldsets for page layout
+<br/>Created on: 4/19/2010; Revised: 4/27/2010 
+</div>
+</fieldset>
+
+<form method="post" action=""> {% if form.errors %}
+  <p style="color: red;"> Please correct the error{{
+form.errors|pluralize }} below. </p>
+{% endif %}
+
+<fieldset>
+<legend>Conditions</legend>
+
+  <table>
+    <tbody>
+      <tr>
+        <th><label for="id_codetype">Code Type:</label></th>
+        <td><name="codetype" id="id_codetype">{{form.codetype}}</name="codetype"></td>
+      </tr>
+      <tr>
+        <th><label for="id_codestatus">Code Status:</label></th>
+        <td><name="codestatus" id="id_codestatus">{{form.codestatus}}</name="codestatus"></td>
+      </tr>
+      <tr>
+        <th><label for="id_diagcpaa" class="cpaa">Condition Present at Admission:</label></th>
+        <td><name="diagcpaa" id="id_diagcpaa" class="cpaa">{{form.diagcpaa}}</name="diagcpaa"></td>
+      </tr>
+   </tbody>
+  </table>
+</fieldset>
+
+<fieldset>
+
+<legend>ICD9 Codes</legend>
+  <table>
+      <tr>
+        <th><label for="id_diagcodeicd9">ICD9 Code:</label></th>
+        <td>{{form.diagcodeicd9}}</td>
+      </tr>
+      <tr>
+        <th><label for="id_icd9codedscr">ICD9 Description:</label></th>
+        <td>{{form.icd9codedscr}}</td>
+      </tr>
+      <tr>
+        <th><label for="id_memo">Memo:</label></th>
+        <td>{{form.memo}}</td>
+      </tr>
+    </tbody>
+  </table>
+</fieldset>
+
+  <p><input name="submit" value="Save Changes" type="submit"></p>
+</form>
+
+{% endblock %}
+

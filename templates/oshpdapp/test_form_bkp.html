@@ -1,0 +1,76 @@
+
+<html>
+<head>
+
+<Title>This is a test form that displays more than 1 field per row<br/>
+and groups related panels of data together</Title>
+
+ <script type="text/javascript"
+	src="/site_media/switch.css"></script>
+</head>
+
+<form action="" method="post">
+
+<body>
+
+<div id="masthead" >
+<h1>masthead</h1>
+</div>
+
+    <div id="sidebar_a"> 
+      <h3>Sidebar A One</h3> 
+        <ul> 
+          <li>Item One</li> 
+          <li>Item Two</li> 
+          <li>Item Three</li> 
+          <li>Item Four</li> 
+          <li>Item Five</li> 
+        </ul> 
+    </div> 
+
+
+
+<div id="sidebar_b" >
+<h3>Sidebar</h3>
+<ul>
+	<li>Item One</li>
+	<li>Item Two</li>
+</ul>
+</div>
+
+<div id="content" >
+
+<div id="d1" style="color:#00FF00">
+<table border="1">
+<tr>
+	<td>{{ form.name.label  }}</td>
+	<td>{{ form.name  }}</td>
+	<td></td>
+	<td></td>
+</tr>
+
+	<td>{{ form.c1.label  }}</td>
+	<td>{{ form.c1  }}</td>
+	<td>{{ form.c2.label  }}</td>
+	<td>{{ form.c2  }}</td>
+</table>
+</div>
+
+<p/>
+
+<div id = "d2" style="color:#00FFFF">
+<table >
+<tr>
+	<td>{{ form.c3.label  }}</td>
+	<td>{{ form.c3  }}</td>
+	<td>{{ form.c4.label  }}</td>
+	<td>{{ form.c4  }}</td>
+</tr>
+</table>
+</div>
+<p/>
+<input type="submit" value="Submit" />
+
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{% extends "lg_base.html" %}
+{% block title %} Embedding Code Snippets {% endblock %}
+{%block mainpanel %}
+	<!-- YOUR DATA GOES HERE - Start --> 
+<!-- Web site js files -->
+<script type="text/javascript" src="/media/windowheight.htm"></script>
+<link rel="stylesheet" type="text/css" href="/media/SyntaxHighlighter.css">
+<script language="javascript" src="/media/shCore.js"></script>
+<script language="javascript" src="/media/shBrushAS3.js"></script>
+<script language="javascript" src="/media/shBrushMxml.htm"></script>
+<script language="javascript" src="/media/shBrushXml.js"></script>
+<script language="javascript" src="/media/shBrushJScript.js"></script>
+
+	<!-- YOUR DATA GOES HERE - Start -->
+
+<h2>Useful Tips/Howto's/Gotcha's - A Pragmatic Guide</h2>
+ Here are a solutions to a few problems I encountered when creating this site. Resolving these took some 
+ research and googling to figure out, so I'll pass them on as they prove useful to others. <p>			
+	</p><p></p>
+	<h3>Embedding code snippets within a web page</h3>
+ 
+	Developers often want to include code snippets on webpages 
+	and there are a few hacks out there to do this (some are pretty ugly - like creating an image file of the code). 
+	Others have server side dependencies. 	
+	The example above uses the SyntaxHighlighter javascript library. This approach is pure javascript 
+	and has the advantage that the code can be pasted
+	to the clipboard and then copied. To use this on your pages there are 3 steps:
+	<p></p>
+	1) Install the library code on your host and in your page create a references for the language of your choice 
+	(In my case I have installed the code in an 'includes' directory on my web server).
+
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;link&nbsp;rel=<span class="string">"stylesheet"</span><span>&nbsp;type=</span><span class="string">"text/css"</span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>href=<span class="string">"includes/SyntaxHighlighter/Styles/SyntaxHighlighter.css"</span><span>&gt;&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;script&nbsp;language=<span class="string">"javascript"</span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;src=<span class="string">"includes/SyntaxHighlighter/Scripts/shCore.js"</span><span>&gt;&lt;/script&gt;&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;script&nbsp;language=<span class="string">"javascript"</span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;src=<span class="string">"includes/SyntaxHighlighter/Scripts/shBrushJScript.js"</span><span>&gt;&lt;/script&gt;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ol></div><textarea style="display: none;" name="code" class="js">		
+&lt;link rel="stylesheet" type="text/css" 
+href="includes/SyntaxHighlighter/Styles/SyntaxHighlighter.css"&gt;
+&lt;script language="javascript" 
+	src="includes/SyntaxHighlighter/Scripts/shCore.js"&gt;&lt;/script&gt;
+&lt;script language="javascript" 
+	src="includes/SyntaxHighlighter/Scripts/shBrushJScript.js"&gt;&lt;/script&gt;
+	
+</textarea>
+
+
+2) Add the following  code to your page to call the javascript function.
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;script&nbsp;language=<span class="string">"javascript"</span><span>&gt;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;dp.SyntaxHighlighter.ClipboardSwf&nbsp;=&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'includes/SyntaxHighlighter/Scripts/clipboard.swf'</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;dp.SyntaxHighlighter.HighlightAll(<span class="string">'code'</span><span>);&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;/script&gt;&nbsp;&nbsp;</span></li></ol></div><textarea style="display: none;" name="code" class="js">		
+	&lt;script language="javascript"&gt;
+		dp.SyntaxHighlighter.ClipboardSwf = 
+		'includes/SyntaxHighlighter/Scripts/clipboard.swf';
+		dp.SyntaxHighlighter.HighlightAll('code');
+	&lt;/script&gt;
+	
+</textarea>
+
+3) Copy the code snippet to your page and surround with the tags "'&lt;'textarea name="code" class="language""; "textarea&gt;"	
+	where the "language" class is set to the relevant value (e.g. js - javascript; py - python etc).
+	
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;textarea&nbsp;name=<span class="string">"code"</span><span>&nbsp;</span><span class="keyword">class</span><span>=</span><span class="string">"js"</span><span>&gt;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//Insert&nbsp;your&nbsp;code&nbsp;here</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&lt;textarea&gt;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ol></div><textarea style="display: none;" name="code" class="js">		
+	&lt;textarea name="code" class="js"&gt;
+		//Insert your code here
+	&lt;textarea&gt;
+		
+</textarea>
+	
+	The syntaxhightlighter can be configured to handle 
+	(almost) any language by installing the appropriate language 'brush' and setting the corresponding class variable. 
+	<a href="http://code.google.com/p/syntaxhighlighter">Download the code from here.</a>
+	
+<!--
+-->	
+	<!-- End mainpanel div-->
+
+	<!-- YOUR DATA GOES HERE - End -->
+{% endblock %}
+
+

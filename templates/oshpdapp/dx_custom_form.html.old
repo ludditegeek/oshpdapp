@@ -1,0 +1,70 @@
+{% extends "oshpd_base.html" %}
+
+{% block external %}
+<script type="text/javascript"	src="/site_media/utils.js">
+</script>
+
+<script type="text/javascript"
+	src="/site_media/jquery.autocomplete.js"></script>
+
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
+<link rel="stylesheet"  href="/site_media/jquery.autocomplete.css" media="screen" type="text/css" />
+
+{% endblock  %}
+
+
+{% block content %}
+<h3>Custom Diagnosis Detail Entry Form</h3>
+
+<p>Hand Coded to create separate divs for various data driven fields.
+Does not use default 'form.as_' to create form. Ajax calls will
+conditionally display
+relevant DX; Proc or Ecode Fields based on drop down selection. Need to
+create Ajax calls here to perform required JS calls.
+</p>
+
+<p>Created on: 4/19/2010 </p>
+
+<form method="post" action=""> {% if form.errors %}
+  <p style="color: red;"> Please correct the error{{
+form.errors|pluralize }} below. </p>
+{% endif %}
+  <table>
+    <tbody>
+      <tr>
+        <th><label for="id_codetype">Codetype:</label></th>
+        <td><name="codetype" id="id_codetype">{{form.codetype}}</name="codetype"></td>
+      </tr>
+      <tr>
+        <th><label for="id_codestatus">Codetype:</label></th>
+        <td><name="codestatus" id="id_codestatus">{{form.codestatus}}</name="codestatus"></td>
+      </tr>
+      <div id="dxtype">   
+      <tr>
+        <th><label for="id_diagcpaa" class="cpaa">Condition Present at Admission:</label></th>
+        <td><name="diagcpaa" id="id_diagcpaa" class="cpaa">{{form.diagcpaa}}</name="diagcpaa"></td>
+      </tr>
+    </div>
+      <tr>
+        <th><label for="id_diagcodeicd9">ICD9 Code:</label></th>
+        <td>{{form.diagcodeicd9}}</td>
+      </tr>
+      <tr>
+        <th><label for="id_icd9codedscr">ICD9 Description:</label></th>
+        <td>{{form.icd9codedscr}}</td>
+      </tr>
+      <tr>
+        <th><label for="id_memo">Memo:</label></th>
+        <td>{{form.memo}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><input name="submit" value="Save Changes" type="submit"></p>
+</form>
+
+{% endblock %}
+

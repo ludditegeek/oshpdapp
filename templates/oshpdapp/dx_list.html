@@ -1,0 +1,39 @@
+{% block content %}
+
+{% if error %}
+    <p style="color: red;" class="searcherror">Please submit a search term.</p>
+        
+{% else %}        
+  
+<ul>
+<fieldset>
+<legend>Diagnostic Entries</legend>
+    <table border="1" >
+	<tr>  
+           <td>ssn</td>
+           <td>code type</td> 
+          <td>code status</td>           
+           <td>code dscr</td> 
+           <td colspan=2>Modify</td>
+	</tr>
+        {% for item in dxcodes %}
+        <tr>
+           <td>{{ item.ptmaster.ssn }}</td>
+           <td>{{ item.codetype }}</td> 
+           <td>{{ item.codestatus }}</td> 
+           <td>{{ item.icd9codedscr }}</td> 
+           <td><a href="/ptdtls/{{ item.id }}">Edit</a></td>
+           <td><a href="/ptdtlsadd/{{ item.ptmaster.id }}">New</a></td>
+
+ 	</tr>
+        {% endfor %}
+    </>
+    </table>
+    <p/>
+</fieldset>
+<ul>
+
+{% endif %}
+
+
+{% endblock %}

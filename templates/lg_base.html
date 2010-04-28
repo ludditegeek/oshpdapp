@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>	
+	
+<!-- Django Base Html - Defines master page -->
+<!-- Web site js files -->
+<!-- LG Custom CSS files - used for this site's page layout -->
+<link rel="stylesheet" type="text/css" media="all" href="/site_media/LGStyles.css">
+
+<!-- Individual YUI CSS files - used for page layout -->
+<!-- Need to reference Yahoo online css files -->
+
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/base/base-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/layout/assets/skins/sam/layout.css">
+
+<title>{% block title %} Title {% endblock %} </title>
+</head>
+
+<!--Div  Content Start -->	
+
+<body bgcolor="#D2FFD2">
+<!--Div  Content Start -->	
+<div id="content">	
+	
+<!--  <body bgcolor="#E2FFE2"#AAFFAA> -->	
+<!-- the id on the containing div determines the page width. -->
+<!-- #doc = 750px; #doc2 = 950px; #doc3 = 100%; #doc4 = 974px -->
+
+<!-- To set the Preset Template, add a class to the containing node -->
+<!-- .yui-t1 = left 160px; .yui-t2 = left 180px; .yui-t3 = left 300px; -->
+<!-- .yui-t4 = right 180px; .yui-t5 = right 240px; .yui-t6 = right 300px; -->
+
+<div id="doc2" class="yui-t4">					
+	<div id="hd">
+	<img src="/site_media/Masthead.png" width="942" height="162">
+		
+	</div>
+	<div id="bd">
+
+		<!-- Preset Templates control the width and alignment of the two blocks (div.yui-b). -->
+		<!-- The wide column is wrapped in div#yui-main -->
+		<div id="yui-main">
+			<div class="yui-b">
+
+  <div id="mainpanel"> 
+	  <!-- YOUR DATA GOES HERE - Start -->
+	  {% block mainpanel %}
+	  MainPanel
+	  {% endblock %}
+	<!-- YOUR DATA GOES HERE - End -->
+	<!-- End mainpanel div-->
+  </div>
+	<!-- Main Panel - End -->
+
+			</div>
+		</div>
+
+		<!-- the unwrapped div.yui-b takes a fixed width and alignment based on the class of the top-level containing node -->
+		<div class="yui-b">			
+			
+			<!-- filler to push menu sidebar down a bit -->
+		<img src="/site_media/filler_160.png" height="35" width="160"/>
+			<!-- Sidebar Div Start-->
+		<div id="sidebar">
+
+	<!-- Sidebar  DATA GOES HERE - Start -->			
+<p>
+	<h3><a href="../../gaebrowser">Home</a></h3>
+	<h3><a href="http://theludditegeek.com/php/LG_Email.php">Send Feedback</a></h3>
+	
+	<h3>Django CRUD </h3>
+	<ul><a href="/">Django DB App</a></ul>
+
+</p><p>
+	<h3>Google App Engine</h3>
+	<ul><a href="../../gaebrowser">DataBrowser</a></ul>
+	<ul><a href="http://myflexapps.appspot.com/examples/initial/Sudoku">Sudoku Game</a></ul>					
+</p><p>
+	<h3>Flex Demo Apps</h3>
+	<ul><a href="../../homepage">Flex Overview</a></ul>
+	<ul><a href="http://theludditegeek.com/LGApps/CRUDDemo/CRUDDemo.html">Flex CRUD</a></ul>
+
+  <h3>Tutorials/Demos</h3>
+  <p>
+	<ul><a href="../../menutree">Custom Tree View</a></ul>	
+	<ul><a href="../../datagrid">Custom Data Grid </a></ul>	
+</p><p>
+	<h3>Tips/How To's</h3>
+	<ul><a href="../../devtoolbag">Developer's Toolbag</a></ul>				
+	<ul><a href="../../howtofooter">Avoiding Page Footer Float</a></ul>	
+	<ul><a href="../../howtosyntax">Embed/Display Code Snippets</a></ul>		
+</p><p>
+</p>
+	<!-- Sidebar DATA GOES HERE - End -->
+				<!-- Sidebar Div End-->
+		</div>
+			
+			</div>	
+	</div>
+	
+<!-- Some breathing room between content and footer -->
+			<img src="/site_media/filler_160.png" height="65" width="160"/>
+
+	<div id="footer">
+		<hr/>		
+		
+<h3/>Content protected with a <a href="">Creative Commons</a> license. Some rights reserved.
+ &copy Copyright Brendan Campbell 2009  </h3>
+	</div>
+</div>
+		
+<!--Div  Content End -->
+</div>	
+</body>
+</html>
+

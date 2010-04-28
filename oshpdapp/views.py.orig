@@ -1,0 +1,371 @@
+# Create your views here.
+
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import get_template
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render_to_response, get_object_or_404
+from django.core.urlresolvers import reverse
+
+# Not avail in v1.1
+#from django.contrib import messages
+
+from oshpdcd.forms import *
+from oshpdcd.models import *
+
+from oshpdcd.myforms import *
+
+
+def main_page(request):
+  return render_to_response(
+    'main_page.html',
+    RequestContext(request)
+  )
+
+def success(request):
+    # target page after successful update    
+    return render_to_response('success.html')
+    
+def edit_prescreen(request, patient_id):
+    # retrieve and edit patient 
+    
+    ent = get_object_or_404(Ptmaster, pk = patient_id)
+    if request.method == 'GET':
+        #create a form to add a new record  
+        message = 'edit prescreen entry' 
+        form =  PrescreenForm()                   
+     
+    if request.method == 'POST':       
+        #create and populate a form    
+        form =  PrescreenForm( data=request.POST, instance=ent)
+        # How to check for checkbox style fields - check if in request[params]
+        srcp = False
+         
+        if form.is_valid():
+            p = form.save(commit=False)
+            # Set default value
+            p.absstatus = 'PENDING'
+            # Enable Abstatus if SSN and DOB are correct
+            #if (request.POST['ssncrct'] =='YES' and request.POST['bthdatecrct'] == 'YES'):
+            if (form.cleaned_data['ssncrct'] =='YES' and form.cleaned_data['bthdatecrct'] == 'YES'):
+                p.absstatus = 'PRESCREENOK'                
+            p.save()
+            # this is confusing - when to use reverse?
+            # create confirmation message
+            
+            #messages.add_message(request, messages.INFO, 'Prescreen record updated for Patient %s.' %patient_id)
+            return HttpResponseRedirect('/search') 
+                      
+    else:
+        form = PrescreenForm(instance=ent)                        
+        #form = PatientForm(edit_patient.html, { 'form': form}  )                        
+    return render_to_response('prescreen_form.html',
+                                 {'form':form, 'add':False})
+                                 
+                                 
+                                 
+def list_prescreen(request):
+    # list all pts pending prescreen
+    error = False
+    form = SearchForm()
+    patients = []
+    show_results = False
+    #    patients = Ptmaster.objects.exclude(absstatus__isnull='PRESCREENOK')
+    patients = Ptmaster.objects.exclude(absstatus__isnull=False)
+    #patients = Ptmaster.objects.all()
+    
+            
+    variables = RequestContext(request, {
+    'form': form,
+    'patients': patients,
+    'show_results': True,
+    'show_tags': True,
+    'show_user': True,
+    'error': error
+    })
+    if request.GET.has_key('ajax'):
+        return render_to_response('prescreen_pending.html', variables)
+    else:
+        return render_to_response('prescreen_pending.html', variables)
+                    
+        
+def edit_abstract(request, patient_id):
+    # retrieve and edit patient 
+    
+    ent = get_object_or_404(Ptmaster, pk = patient_id)
+    if request.method == 'GET':
+        #create a form to edit a record  
+        message = 'edit patient abstraction entry' 
+        form =  AbstractionForm()                   
+     
+    if request.method == 'POST':       
+        #create and populate a form    
+        form =  AbstractionForm( data=request.POST, instance=ent)                  
+        if form.is_valid():
+            # ?? Use RE Validation on zip code; MRN ?? 
+            p = form.save(commit=False)
+            p.save()
+            return HttpResponseRedirect('/search') 
+                      
+    else:
+        form = AbstractionForm(instance=ent)                        
+    return render_to_response('abstraction_form.html',
+                                 {'form':form, 'add':False})   
+                                 
+                                 
+def edit_dxcode(request, code_id):
+    # edit diagnosis code
+
+    #ent = get_object_or_404(Ptdx, pk = int(code_id)
+    ent = get_object_or_404(Ptdx, id = code_id)
+    
+    #ent = get_object_or_404(Ptdx, pk = 1)
+    
+    #assert False
+    
+    if request.method == 'GET':
+        #create a form to edit a record  
+        message = 'edit diagnosis code' 
+        form =  DxForm()                   
+     
+    if request.method == 'POST':       
+        #create and populate a form    
+        form =  DxForm( data=request.POST, instance=ent)                  
+        if form.is_valid():
+            # ?? Use RE Validation on zip code; MRN ?? 
+            p = form.save(commit=False)
+            p.save()
+            return HttpResponseRedirect('/search')                       
+    else:
+        form = DxForm(instance=ent)  
+        #form = DxForm()  
+                              
+    return render_to_response('dx_form.html',
+                                 {'form':form, 'add':False})   
+                                 
+                                 
+def add_dxcode(request, patient_id):
+    # Add new Code rec for selected patient
+    pass                                 
+                                 
+        
+def list_abstract(request):
+    # list all pts pending prescreen
+    error = False
+    form = SearchForm()
+    patients = []
+    show_results = False
+    patients = Ptmaster.objects.filter(absstatus__exact='PRESCREENOK')
+                
+    variables = RequestContext(request, {
+    'form': form,
+    'patients': patients,
+    'show_results': True,
+    'show_tags': True,
+    'show_user': True,
+    'error': error
+    })
+    if request.GET.has_key('ajax'):
+        return render_to_response('prescreen_complete.html', variables)
+    else:
+        return render_to_response('prescreen_complete.html', variables)        
+        
+                                                                                                               
+def search_patient(request):
+    # AJAX search (via ssn) for existing patient(s) in Ptmaster table
+    error = False
+    form = SearchForm()
+    patients = []
+    show_results = False
+    if 'query' in request.GET:
+        show_results = True
+        query = request.GET['query'].strip()
+        if query:
+            form = SearchForm({'query' : query})
+            patients = Ptmaster.objects.filter(ssn__startswith=query)
+        else:
+            error = True
+            
+    variables = RequestContext(request, {
+    'form': form,
+    'patients': patients,
+    'show_results': show_results,
+    'show_tags': True,
+    'show_user': True,
+    'error': error
+    })
+    
+    # ?? Select different template based on where user came from
+    # (e.g. if user selected DX Assignment then need to link there next)
+    if request.GET.has_key('ajax'):
+        return render_to_response('ptmaster_list.html', variables)
+    else:
+        return render_to_response('search.html', variables)
+        
+def test(request):
+
+    # handle test form
+    form = TForm()      # Create Unbound form
+    # How to set initial values??
+    form.name = 'aaa'
+    
+    #assert False # for debugging
+
+#    variables = RequestContext(request, {
+#    'form': form,
+#    'error': error
+#    })
+  
+    return render_to_response('test_form.html', {'form': form,})
+    
+def search_patient_dx(request):
+    # AJAX search (via PK) for matching records in the Ptdx table
+    error = False
+    caller = 'dx'
+    patient = 0
+    # Create Label to indicate type of search
+    tag = 'Diagnosis Code - Patient Search' 
+    form = SearchForm()
+    #form = SearchForm({'hdr': False})
+    #form = SearchForm({'hdr' :True})
+    
+    dxcodes = []
+    show_results = False
+    if 'query' in request.GET:
+        show_results = True
+        query = request.GET['query'].strip()
+        if query:
+            form = SearchForm({'query' : query, 'hdr' :True})
+            #dxcodes = Ptdx.objects.filter(ptmaster__exact=query)   
+            dxcodes = Ptdx.objects.all() 
+            patient = dxcodes[0].ptmaster_id
+            #patient = first.ptmaster_id
+            #assert False            
+        else:
+            error = True
+
+    #assert False
+            
+    variables = RequestContext(request, {
+    'form': form,
+    'caller': caller,
+    'dxcodes': dxcodes,
+    'patient': patient,
+    'show_results': show_results,
+    'show_tags': True,
+    'show_user': True,
+    'error': error
+    })
+    
+    # ?? Select different template based on where user came from
+    # (e.g. if user selected DX Assignment then need to link there next)
+    if request.GET.has_key('ajax'):
+        return render_to_response('dx_list.html', variables)
+    else:
+        return render_to_response('search.html', variables)    
+        
+   
+def search_patient_pr(request):
+    # AJAX search (via PK) for matching records in the Ptdx table
+    error = False
+    caller = 'pr'    
+    form = SearchForm()
+    patients = []
+    show_results = False
+    if 'query' in request.GET:
+        show_results = True
+        query = request.GET['query'].strip()
+        if query:
+            form = SearchForm({'query' : query})
+            patients = Ptmaster.objects.filter(ssn__startswith=query)            
+        else:
+            error = True
+            
+    variables = RequestContext(request, {
+    'form': form,
+    'caller': caller,
+    'patients': patients,
+    'show_results': show_results,
+    'show_tags': True,
+    'show_user': True,
+    'error': error
+    })
+    
+    # ?? Select different template based on where user came from
+    # (e.g. if user selected DX Assignment then need to link there next)
+    if request.GET.has_key('ajax'):
+        return render_to_response('prescreen_list.html', variables)
+    else:
+        return render_to_response('search.html', variables)   
+        
+        
+def search_patient_ab(request):
+    l_type = 'ABLIST'
+    return search_generic (request, l_type)
+
+
+def search_generic(request, l_type):
+
+    # Allow user to edit/add dx entry for selected patient
+    # Need to receive a patient id
+    # Display list of patients - link to dx list - allow edit/add
+    # from this list
+    
+    # these templates are similar, except for the links that reference subsequent pages 
+    if l_type == 'DXLIST':
+        next = 'dx_list.html'
+        
+    if l_type == 'ABLIST':
+        next = 'abstract_list.html'
+
+    if l_type == 'PRLIST':
+        next = 'prescreen_list.html'
+                        
+    # AJAX search (via ssn) for existing patient(s) in Ptmaster table
+    error = False
+    form = SearchForm()
+    patients = []
+    show_results = False
+    if 'query' in request.GET:
+        show_results = True
+        query = request.GET['query'].strip()
+        if query:
+            form = SearchForm({'query' : query})
+            patients = Ptmaster.objects.filter(ssn__startswith=query)
+        else:
+            error = True
+            
+    variables = RequestContext(request, {
+    'form': form,
+    'patients': patients,
+    'show_results': show_results,
+    'show_tags': True,
+    'show_user': True,
+    'error': error,
+    'l_type': l_type
+    })
+    
+    #assert False
+    # HOw does this get set?
+    if request.GET.has_key('ajax'):
+        return render_to_response(next, variables)
+    else:
+        return render_to_response('search.html', variables)
+        #return render_to_response(next, variables)
+                
+        
+        
+        
+
+
+    
+    
+                                     
+                                 
+                                     

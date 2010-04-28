@@ -1,0 +1,97 @@
+{% extends "lg_base.html" %}
+{% block title %} Custom Tree View {% endblock %}
+{%block mainpanel %}
+<!-- Web site js files -->
+<script type="text/javascript" src="/media/windowheight.htm"></script>
+<link rel="stylesheet" type="text/css" href="/media/SyntaxHighlighter.css">
+<script language="javascript" src="/media/shCore.js"></script>
+<script language="javascript" src="/media/shBrushAS3.js"></script>
+<script language="javascript" src="/media/shBrushMxml.htm"></script>
+<script language="javascript" src="/media/shBrushXml.js"></script>
+<script language="javascript" src="/media/shBrushJScript.js"></script>
+
+	<!-- YOUR DATA GOES HERE - Start --> 
+	<h2> Custom Tree View</h2>
+
+<p> I modified the standard Flex treeview to add the following
+features: a) auto expand and display the contents of all nodes when
+initially opened; b) respond to being clicked anywhere on the row; and
+c) change the default rendering to hide the folder icons. Run the demo
+and you can see the basic and enhanced versions side by side. The code
+snippets below show how these features are implemented.
+<a href="http://theludditegeek.com/LGApps/TreeViewDemo/TreeView.html">Click here to run the demo</a><!--.
+
+</p-->
+</p><h3>a) Auto expand all child nodes when the form is opened:</h3>
+
+<p>
+	<!--
+-->	
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-as" start="1"><li class="alt"><span><span class="comment">//&nbsp;Initialize&nbsp;tree&nbsp;on&nbsp;'creationComplete'</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">private</span><span>&nbsp;</span><span class="keyword">function</span><span>&nbsp;initTree():</span><span class="keyword">void</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;menuTree.validateNow();&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;menuTree.expandItem(xmlMenu,<span class="keyword">true</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">var</span><span>&nbsp;nodeList:XMLListCollection&nbsp;=&nbsp;menuTree.dataProvider&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">as</span><span>&nbsp;XMLListCollection;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">var</span><span>&nbsp;nodes:</span><span class="keyword">XMLList</span><span>&nbsp;=&nbsp;nodeList.source;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;expandSubNodes(nodes);&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">//&nbsp;Auto&nbsp;Expand&nbsp;all&nbsp;child&nbsp;nodes&nbsp;</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">private</span><span>&nbsp;</span><span class="keyword">function</span><span>&nbsp;expandSubNodes(nodes:</span><span class="keyword">XMLList</span><span>):</span><span class="keyword">void</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>(</span><span class="variable">var</span><span>&nbsp;i:</span><span class="keyword">int</span><span>&nbsp;=&nbsp;0&nbsp;;&nbsp;i&nbsp;&lt;&nbsp;nodes.length()&nbsp;;&nbsp;i++)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">var</span><span>&nbsp;n:</span><span class="keyword">XML</span><span>&nbsp;=&nbsp;nodes[i];&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(n.children()&nbsp;!=&nbsp;</span><span class="keyword">null</span><span>)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuTree.expandItem(n,<span class="keyword">true</span><span>,</span><span class="keyword">false</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expandSubNodes(n.children());&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="keyword">else</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li></ol></div><textarea style="display: none;" name="code" class="as3">// Initialize tree on 'creationComplete'
+private function initTree():void {
+	menuTree.validateNow();
+	menuTree.expandItem(xmlMenu,true);
+	var nodeList:XMLListCollection = menuTree.dataProvider 
+	 								 as XMLListCollection;
+	var nodes:XMLList = nodeList.source;
+	expandSubNodes(nodes);
+}
+ 
+// Auto Expand all child nodes 
+private function expandSubNodes(nodes:XMLList):void {
+      for(var i:int = 0 ; i &lt; nodes.length() ; i++)
+      {
+          var n:XML = nodes[i];
+          if(n.children() != null)
+          {
+              menuTree.expandItem(n,true,false);
+              expandSubNodes(n.children());
+          } else {
+              break;
+          }
+      }           
+}
+</textarea>
+</p>
+
+<h3>b) Click anywhere on the row to open/close a node:</h3>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-as" start="1"><li class="alt"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">//Respond&nbsp;to&nbsp;click&nbsp;anywhere&nbsp;on&nbsp;a&nbsp;node/row</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="keyword">private</span><span>&nbsp;</span><span class="keyword">function</span><span>&nbsp;tree_itemClick(evt:ListEvent):</span><span class="keyword">void</span><span>&nbsp;{&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">var</span><span>&nbsp;item:</span><span class="keyword">Object</span><span>&nbsp;=&nbsp;Tree(evt.currentTarget).selectedItem;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(menuTree.dataDescriptor.isBranch(item))&nbsp;{&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuTree.expandItem(item,&nbsp;!menuTree.isItemOpen(item),&nbsp;<span class="keyword">true</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li></ol></div><textarea style="display: none;" name="code" class="as3">				
+//Respond to click anywhere on a node/row
+private function tree_itemClick(evt:ListEvent):void {
+    var item:Object = Tree(evt.currentTarget).selectedItem;
+    if (menuTree.dataDescriptor.isBranch(item)) {
+        menuTree.expandItem(item, !menuTree.isItemOpen(item), true);
+    }
+}
+</textarea>
+				
+				
+<h3>c) To hide folder icons when nodes are opened:</h3>				
+
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-as" start="1"><li class="alt"><span><span class="comment">//&nbsp;mxml&nbsp;definition&nbsp;-&nbsp;set&nbsp;defaultLeafIcon=null&nbsp;and&nbsp;</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">//assign&nbsp;styles&nbsp;sheet&nbsp;as&nbsp;shown&nbsp;below</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;mx:Tree&nbsp;id=<span class="string">"menuTree"</span><span>&nbsp;&nbsp;dataProvider=</span><span class="string">"{xmlMenu}"</span><span>&nbsp;styleName=</span><span class="string">"menuTree"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;labelField=<span class="string">"@label"</span><span>&nbsp;labelFunction=</span><span class="string">"tree_labelFunc"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itemClick=<span class="string">"tree_itemClick(event);"</span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borderStyle=<span class="string">"none"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;change=<span class="string">"treeChanged(event)"</span><span>&nbsp;&nbsp;&nbsp;defaultLeafIcon=</span><span class="string">"{null}"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minWidth=<span class="string">"100"</span><span>&nbsp;minHeight=</span><span class="string">"200"</span><span>&nbsp;showRoot=</span><span class="string">"false"</span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creationComplete=<span class="string">"initTree();"</span><span>/&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="blockcomment">/*&nbsp;Style&nbsp;Sheet&nbsp;Setting&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;.menuTree&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;folderClosedIcon:&nbsp;ClassReference(<span class="keyword">null</span><span>);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;folderOpenIcon:&nbsp;ClassReference(<span class="keyword">null</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li></ol></div><textarea style="display: none;" name="code" class="as3">// mxml definition - set defaultLeafIcon=null and 
+//assign styles sheet as shown below
+	&lt;mx:Tree id="menuTree"  dataProvider="{xmlMenu}" styleName="menuTree"
+		labelField="@label" labelFunction="tree_labelFunc"
+		itemClick="tree_itemClick(event);" 
+		borderStyle="none"
+		change="treeChanged(event)"   defaultLeafIcon="{null}"
+		minWidth="100" minHeight="200" showRoot="false" 
+		creationComplete="initTree();"/&gt;		
+	
+	/* Style Sheet Setting */
+ .menuTree {
+	folderClosedIcon: ClassReference(null);
+	folderOpenIcon: ClassReference(null);
+	}
+</textarea>
+
+
+	
+	<!-- YOUR DATA GOES HERE - End -->
+	<!-- End mainpanel div-->
+
+
+	<!-- YOUR DATA GOES HERE - End -->
+{% endblock %}
+
+

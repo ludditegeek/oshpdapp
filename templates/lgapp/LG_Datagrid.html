@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>	
+	
+<!-- Web site js files -->
+<script type="text/javascript" src="js/windowheight.js"></script>
+<link rel="stylesheet" type="text/css" href="includes/SyntaxHighlighter/Styles/SyntaxHighlighter.css">
+<script language="javascript" src="includes/SyntaxHighlighter/Scripts/shCore.js"></script>
+<script language="javascript" src="includes/SyntaxHighlighter/Scripts/shBrushAS3.js"></script>
+<script language="javascript" src="includes/SyntaxHighlighter//Scripts/shBrushMxml.js"></script>
+<script language="javascript" src="includes/SyntaxHighlighter/Scripts/shBrushXml.js"></script>
+<script language="javascript" src="includes/SyntaxHighlighter/Scripts/shBrushJScript.js"></script>
+
+	
+<!-- Web site js files -->
+<script type="text/javascript" language="javascript" src="js/windowheight.js"></script>
+<!--
+-->
+<!-- LG Custom CSS files - used for this site's page layout -->
+<link rel="stylesheet" type="text/css" href="css/LGStyles.css">
+
+<!-- Individual YUI CSS files - used for page layout -->
+<link rel="stylesheet" type="text/css" href="2.6.0/build/reset-fonts-grids/reset-fonts-grids.css">
+<link rel="stylesheet" type="text/css" href="2.6.0/build/base/base-min.css">
+<link rel="stylesheet" type="text/css" href="2.6.0/build/layout/assets/skins/sam/layout.css">
+
+<title>My Web Toolbag</title>	
+
+<link rel="stylesheet" type="text/css" href="niftyCorners.css">
+<script type="text/javascript">
+window.onload=function(){
+  //alert("oload catched: now nifty corners are ready to round!"); 
+    }
+</script>
+<script type="text/javascript" src="js/niftycube.js"></script>
+<script type="text/javascript">
+NiftyLoad=function(){
+Nifty("div#hd","big");
+}
+</script>
+
+</head>
+
+<body bgcolor="#D2FFD2">
+<!--Div  Content Start -->	
+<div id="content">	
+	
+<!--  <body bgcolor="#E2FFE2"#AAFFAA> -->	
+<!-- the id on the containing div determines the page width. -->
+<!-- #doc = 750px; #doc2 = 950px; #doc3 = 100%; #doc4 = 974px -->
+
+<!-- To set the Preset Template, add a class to the containing node -->
+<!-- .yui-t1 = left 160px; .yui-t2 = left 180px; .yui-t3 = left 300px; -->
+<!-- .yui-t4 = right 180px; .yui-t5 = right 240px; .yui-t6 = right 300px; -->
+
+<div id="doc2" class="yui-t4">					
+	<div id="hd">
+<img src="images/LG_Pristina_Masthead.png" height="162" width="942"/>
+
+		
+	</div>
+	<div id="bd">
+
+		<!-- Preset Templates control the width and alignment of the two blocks (div.yui-b). -->
+		<!-- The wide column is wrapped in div#yui-main -->
+		<div id="yui-main">
+			<div class="yui-b">
+
+  <div id="mainpanel"> 
+
+	<!-- YOUR DATA GOES HERE - Start --> 
+	<h2> Custom Datagrid</a></h2>
+<p>	
+	I wanted to provide a colour coded/dashboard like display to users. 
+The idea is to highlight any datagrid cells containing date values where the data is considered stale. The value in the cell is 
+	compared with the current date. If the date difference (in days) is greater than the specified threshold,
+	 the cell's background colour is  set to the specified 'thresholdColor'. Otherwise the default colour is used.
+	 In my example I have arbitrarily set threshold values for 30, 90 and 365 days. 
+	
+The code snippets below show how these features are implemented - <a href="LGApps/DataGridDemo/CustomDataGrid.html">Click here to see this in action</a></.
+</p>
+
+
+
+<textarea name="code" class="as3">
+// CustomDataGrid.mxml - Datagrid/Datacolumn property definition
+
+<mx:Panel title="DataGrid Control with custom rendering
+	Items in red represent stale data 
+	(based on elapsed day count since current date)" 
+	height="225" width="850" 
+    paddingTop="10" paddingLeft="10" paddingRight="10">
+<mx:DataGrid dataProvider="{ptStatus}" paddingTop="0" 
+	paddingBottom="0" height="100%" 
+	  verticalAlign="middle" >
+	<mx:columns>
+	<mx:DataGridColumn headerText="Patient ID" dataField="ptid"/>
+	<mx:DataGridColumn headerText="Last Name" dataField="lastname"/>
+	<local:BackgroundColorColumn 
+			="Last Lab Test (30 days)" 
+			dataField="lablast" threshhold="30" 
+			itemRenderer="BackgroundColorRenderer" 
+			threshholdColor="0xFF0000"  width="200"/>
+	<local:BackgroundColorColumn 
+			="Last Surgery Date (365 days)" 
+			dataField="surgery" threshhold="365"  id="surgerycol"
+			itemRenderer="BackgroundColorRenderer" 
+			threshholdColor="0xFF0000" width="200" />	
+	<local:BackgroundColorColumn 
+			headerText="Last FollowUp Date(90 days)"
+			 dataField="fulast" threshhold="90" 
+			itemRenderer="BackgroundColorRenderer" 
+			threshholdColor="0xFF0000" width="200"/>				
+</mx:columns>
+</mx:DataGrid>
+</mx:Panel>
+</textarea>
+</p>
+<p>BackgroundColorRenderer class -  extends DataGridItemRenderer - Computes date difference in days and sets the 
+cell backgound colour to either the default colour or the 'thresholdColor'.</p>
+
+<textarea name="code" class="as3">	
+// BackgroundColorRenderer.as
+
+if (dataGrid.isItemSelected(data)
+	 || dataGrid.isItemHighlighted(data))
+{
+	// clear the background so you can see 
+	// the selection/highlight colors
+	background = false;
+	return;
+}
+var column:BackgroundColorColumn = 
+					dataGrid.columns[dgListData.columnIndex];		
+// Check date within range - highlight stale date values 
+// threshold indicates day count
+var dayCount:int = int (column.threshhold);
+var str:String = data[column.dataField];
+var now:Date = new Date()
+var strArray:Array = str.split('/');
+var dateval:Date = new Date (str);  //pass string
+// Compute # msecs on 30 days (1000 *60*60) *24 *30
+var msecthreshold:Number = dayCount * millisecondsPerDay;
+var tnow:Number = now.getTime();
+var tprev:Number = dateval.getTime();
+var ddiff:Number = tnow-tprev;
+var days:Number = ddiff/millisecondsPerDay;
+var datediff:Number = now.getTime() - dateval.getTime();
+
+switch (datediff >= msecthreshold){
+	case true:	
+		background = true;
+		backgroundColor = column.threshholdColor;
+		break;				
+	default:					
+		background = true;
+		backgroundColor =  0x4BB74C;  //Default colour
+		break;				
+}
+</textarea>
+</p>
+<p>
+	<!--
+-->	
+	
+	<!-- YOUR DATA GOES HERE - End -->	
+	<!-- End mainpanel div-->
+
+
+	<!-- YOUR DATA GOES HERE - End -->
+	<!-- End mainpanel div-->
+  </div>
+	<!-- Main Panel - End -->
+
+			</div>
+		</div>
+
+		<!-- the unwrapped div.yui-b takes a fixed width and alignment based on the class of the top-level containing node -->
+		<div class="yui-b">			
+			
+			<!-- filler to push menu sidebar down a bit -->
+		<img src="images/filler_160.png" height="35" width="160"/>
+			<!-- Sidebar Div Start-->
+		<div id="sidebar">
+
+	<!-- Sidebar  DATA GOES HERE - Start -->			
+<p>
+	<h3><a href="LG_Main.html">Home</a></h3>
+	<h3><a href="LG_About.html">My $0.02c</a></h3>
+	<h3><a href="php/LG_Email.php">Send Feedback</a></h3>
+	
+	
+</p><p>
+	<h3>Flex Demo Apps</h3>
+	<ul><a href="LGApps/CRUDDemo/CRUDDemo.html">Flex CRUD</a></ul>
+	<ul><a href="http://myflexapps.appspot.com/examples/initial/Sudoku">Flex Sudoku</a></ul>					
+
+  <h3>Tutorials/Demos</h3>
+  <p>
+	<ul><a href="LG_MenuTree.html">Custom Tree View</a></ul>	
+	<ul><a href="LG_Datagrid.html">Custom Datagrid</a></ul>	
+</p><p>
+	<h3>Tips/How To's</h3>
+	<ul><a href="WebUtils.html">Developer's Toolbag</a></ul>				
+	<ul><a href="HowToFooter.html">Avoiding Page Footer Float</a></ul>	
+	<ul><a href="HowToSyntax.html">Embed/Display Code Snippets</a></ul>		
+</p><p>
+</p>
+	
+	<!-- Sidebar DATA GOES HERE - End -->	
+		</div>
+			
+			</div>	
+	</div>
+	
+<!-- Some breathing room between content and footer -->
+			<img src="images/filler_160.png" height="65" width="160"/>
+
+	<div id="footer">
+		<hr/>		
+		
+<h3/>Content protected with a <a href="">Creative Commons</a> license. Some rights reserved.
+ &copy Copyright Brendan Campbell 2008  </h3>
+	</div>
+</div>
+		
+	<!--  dp.SyntaxHighlighter (http://www.dreamprojections.com/SyntaxHighlighter/) -->
+
+<!--
+-->
+	<script language="javascript">
+		dp.SyntaxHighlighter.ClipboardSwf = 'http://theludditegeek.com/includes/SyntaxHighlighter/Scripts/clipboard.swf';
+		dp.SyntaxHighlighter.HighlightAll('code');
+	</script>
+<!--Div  Content End -->
+</div>	
+</body>
+</html>
+

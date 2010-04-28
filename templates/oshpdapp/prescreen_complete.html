@@ -1,0 +1,17 @@
+{% extends "oshpd_base.html" %}
+{% block external %}
+  <script type="text/javascript"
+    src="/site_media/search.js"></script>
+{% endblock %}
+{% block title %}Search Patients{% endblock %}
+{% block head %}Search Patients{% endblock %}
+{% block content %}
+
+<p>Pending Abstraction List (Prescreen Completed)</p>
+
+<div id="search-results">
+  {% if show_results %}
+    {% include "abstract_list.html" %}
+  {% endif %}
+</div>
+{% endblock %}

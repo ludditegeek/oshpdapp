@@ -1,0 +1,35 @@
+{% extends "lg_base.html" %}
+{% block title %} Luddite Geek Home{% endblock %}
+{%block mainpanel %}
+	<!-- YOUR DATA GOES HERE - Start -->
+	<h2>About This Site</h2>
+	<p>
+	Technologies (mostly open source tools) used in the creation of the applications described on this
+ (and management/maintenace of this) website site include: Python, Django,
+	Ajax, Google App Engine, Javascript (YUI lib), Web Services, Firebug, CSS, XML, MySql, Flex/ActionScript,
+	SVN/Mercurial Version  Control)  etc. + lots of
+	handcoding.
+	</p>
+<p>I created this website to share some web development tips and techniques, with a focus on the use of Adobe's Flex technology for developing Rich Internet applications (RIA). To begin with I'm focusing on front end user interface (UI) features. However as a long time application and database developer I hope to include some content focusing on back end database integration issues and howto's in the future. </p>
+<h2>My Flex Applications</h2>
+<p>I recently created several Flex demo applications that are available online. My <a href="LGApps/CRUDDemo/CRUDDemo.html">	CRUD (Create/Update/Delete) </a> application shows a Flex based User Interface/Front End I designed for a database application. Here's a sample screen shot of a data entry form with an embedded, customized datagrid showing colour coded patient status info.(This example is loosely  based on an Electronic Medical Records application I developed in an earlier life).</p>
+<img src="/media/PtReg.gif" height="478" width="740" class="scrnshot"/>
+<p>
+The design implements a set of features to address requirements common in most database application Front Ends. These include application logon, data driven (XML) menu navigation, popup search forms, update logging and custom data validation. This application was built using <a href="http://mate.asfusion.com/">the Mate MVC framework.</a> </p>
+<p></p>	
+<p>
+My <a href="http://myflexapps.appspot.com/examples/initial/Sudoku">Sudoku game</a> consists of a Flex UI combined with a <a href="http://code.google.com/appengine"> Google App Engine</a> back end. When an invalid value is entered in a cell all related cells (i.e. row, col and subgrid) are highlighted as can be seen in the screenshot below. Another UI feature shown here is the cell tooltip hint (in yellow) that shows the possible values for a cell.These are (optionally) displayed when a user hovers over a cell.</p>
+
+<img src="/media/FlexSudoku.gif" height="468" width="389" class="scrnshot"/>
+
+<p>I developed this application to explore the world of 'cloud' computing. The design required the creation of several data retrieval services (written in Python) that are hosted on the Google App Engine. These services are invoked by the Front End via custom HTTP service requests (e.g. calls to save, retrieve and solve games). A library of games of varying difficulty is maintained on the Google back end (in the cloud). A new game is selected at random either at startup or on demand. The game UI implements several interesting features including: custom tooltip hints (showing possible cell values), custom game solver, custom popup forms, custom error grid display. (Note: The game solver is extremely fast and can solve even the most difficult Sudoku games in less than 1 second - provided that a solution exists). Give it a spin and see for yourself.  
+</p>	
+<p>
+In creating these demos I needed to extend/enhance several of the standard Flex components in order to improve/enhance the user interface.
+I decided to share some of the techniques I used to create the UI for these applications. Rather than decompose these larger applications I have created a set of smaller 'snippet' tutorial demos that focus on one specific feature or component. This will make it easier to 'grok' the code and use it in your own applications. 
+You can also download the code for the tutorial demos by rightclicking on the application. </p> 
+	<!-- YOUR DATA GOES HERE - End -->
+
+{% endblock %}
+
+

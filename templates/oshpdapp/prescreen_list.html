@@ -1,0 +1,32 @@
+
+
+{% block content %}
+
+
+<ul>
+    <table  border="1">
+	<tr>  
+	   <td>id</td>
+           <td>ssn</td> 
+           <td>dob</td> 
+	   <td>admdate</td> 
+           <td>dschdate</td>
+           <td>abstatus</td>
+           <td colspan=2>Modify</td>
+	</tr>
+        {% for item in patients %}
+        <tr>
+           <td>{{ item.id }}</td>
+           <td>{{ item.ssn }}</td> 
+           <td>{{ item.bthdate.date }}</td> 
+           <td>{{ item.admtdate.date }}</td> 
+	   <td>{{ item.dschdate.date }}</td> 
+           <td>{{ item.absstatus }}</td>
+           <td><a href="/prescreen/{{ item.id }}">Edit</a></td>
+ 	</tr>
+        {% endfor %}
+    </>
+    </table>
+<ul>
+
+{% endblock %}

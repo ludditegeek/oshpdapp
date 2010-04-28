@@ -1,0 +1,33 @@
+$(document).ready(function () {	
+	$("#id_codetype").change(onSelectChange);
+	$("input#id_diagcodeicd9").autocomplete(
+	{source: ["one", "two", "three", "twelve"]
+	});	
+
+});
+
+function onSelectChange(){
+	var selected = $("#id_codetype option:selected");
+	//alert ('selection changed');		
+	var output = "";
+	if(selected.val() != 0){
+		output = "You Selected " + selected.text();
+	}
+	if(selected.val() != 'DIAG'){
+		// hide cpaa field
+		//$("#id_diagcpaa").hide();
+		//$('#dxtype').hide();
+		$('.cpaa').hide();
+
+	}
+	else {
+		//$('#dxtype').show();
+		//$("#id_diagcpaa").show();
+		$('.cpaa').show();
+
+	}	
+
+	$("#output").html(output);
+}
+
+
