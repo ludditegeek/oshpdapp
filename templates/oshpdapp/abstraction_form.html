@@ -4,7 +4,9 @@
 
 <title>{% if add %} Add new {% else %}Edit selected {% endif %} patient details; </title>
 
-<h3>Enter Patient Detailed Abstraction Details</h3>
+<fieldset>
+
+<legend>Patient Admittance Summary</legend>
 
 <form action="" method="post">
 
@@ -15,10 +17,80 @@
     {% endif %}
 
 <table>
-{{ form.as_table}}
-</table>
-<p><input type="submit" name = "submit" value="Save Changes" /></p>
+      <tr>
+        <th> <label for="id_ssn">Patient SSN:</label></th>
+        <td colspan="1" id="id_ssn">{{form.ssn}}</td>     
+        <th> <label for="id_bthdate">Date Of Birth:</label></th>
+        <td colspan="1" id="id_bthdate">{{form.bthdate}}</td>
+      </tr>
 
+      <tr>
+        <th colspan="1"><label for="id_abstrec">MRN:</label></th>
+        <td colspan="1" id="id_abstrec">{{form.abstrec}}</td>      
+        <th><label for="id_patzip">Zip Code:</label></th>
+        <td colspan="1" id="id_patzip">{{form.patzip}}</td>     
+      </tr>
+            
+      <tr>
+        <th colspan="1"><label for="id_sex">Sex:</label></th>
+        <td colspan="1" id="id_sex">{{form.sex}}</td>      
+        <th><label for="id_admtype">Admission Type:</label></th>
+        <td colspan="1" id="id_admtype">{{form.admtype}}</td>     
+      </tr>
+      
+      <tr>
+        <th colspan="1"><label for="id_dnrad">DNR Order at Admission:</label></th>
+        <td colspan="1" id="id_dnrad">{{form.dnrad}}</td>      
+        <th><label for="id_crosswalk">Crosswalk:</label></th>
+        <td colspan="1" id="id_crosswalk">{{form.crosswalk}}</td>     
+      </tr>
+      
+      <tr>
+        <th><label for="id_memo">Memo:</label></th>
+        <td colspan="3" class="memoclass">{{form.memo}}</td>
+      </tr>    
+      
+</table>
+</fieldset>
+
+ <fieldset>
+ <legend>Ethnicity/Race Info - Check all applicable </legend>
+
+<table>      
+      <tr>
+        <th colspan="2" ><label for="id_ethncty">Ethnicity:</label></th>
+        <td colspan="4" id="id_ethncty">{{form.ethncty}}</td> 
+        <th colspan="4" ><label for="id_hospracecode">Hospital Race Code:</label></th>
+        <td colspan="2" id="id_hospracecode">{{form.hospracecode}}</td>                  
+      </tr>
+         
+      <tr>
+        <th colspan="1"><label for="id_racewht"  >White:</label></th>
+        <td colspan="2">{{form.racewht}}</td>        
+        <th colspan="1"><label for="id_raceblk"  >Black:</label></th>
+        <td colspan="2">{{form.raceblk}}</td> 
+        <th colspan="4"><label for="id_racena"  >Native American/Eskimo</label></th>
+        <td colspan="2">{{form.racena}}</td>                 
+      </tr>
+
+      <tr>                
+        <th colspan="1"><label for="id_raceapi"  >Asian/Pacific Islander:</label></th>
+        <td colspan="2">{{form.raceapi}}</td>                
+        <th colspan="1"><label for="id_raceoth"  >Other</label></th>
+        <td colspan="2">{{form.raceoth}}</td>        
+        <th colspan="4"><label for="id_raceunk"  >Unknown:</label></th>
+        <td colspan="2">{{form.raceunk}}</td>                
+      </tr>
+                     
+                
+ </table>
+ </fieldset>
+ 
+
+<p>
+<input type="submit" name = "submit" value="Save Changes" />
+<input type="submit" name = "submit" value="Cancel" />
+</p>
 </form>
 
 {% endblock %}

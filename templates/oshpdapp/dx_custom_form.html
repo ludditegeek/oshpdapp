@@ -42,18 +42,6 @@ font-weight: bold;
 }
 </style>
 
-<fieldset>
-<legend>Custom Diagnosis Detail Entry Form</legend>
-<div>
-Hand Coded to create specific classes for various data driven fields.
-Does not use default 'form.as_' to create form. Ajax calls will
-conditionally displayrelevant DX; Proc or Ecode Fields based on drop down selection. Need to
-create Ajax calls here to perform required JS calls.
-<br/>Note use of fieldsets for page layout
-<br/>Created on: 4/19/2010; Revised: 4/27/2010 
-</div>
-</fieldset>
-
 <form method="post" action=""> {% if form.errors %}
   <p style="color: red;"> Please correct the error{{
 form.errors|pluralize }} below. </p>
@@ -100,7 +88,8 @@ form.errors|pluralize }} below. </p>
   </table>
 </fieldset>
 
-  <p><input name="submit" value="Save Changes" type="submit"></p>
+  <p><input name="submit" value="Save Changes" type="submit"><input name="cancel" value="Cancel Changes" type="submit"></p>
+
 </form>
 
 {% endblock %}

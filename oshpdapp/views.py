@@ -35,6 +35,14 @@ def _get_next(request):
     redirect to that previous page.
     """
     return request.POST.get('next', request.GET.get('next', request.META.get('HTTP_REFERER', None)))
+    
+def _get_id_from_url(request):
+    """
+    1.  Parse URL from extract id field passed at End of URL
+    """
+    # make this a helper method    
+    # extract id value from url	    
+    return urlparse.urlparse(request.META.get('HTTP_REFERER', None)).path.split('/')[-1]	            
 
 def main_page(request):
   return render_to_response(
@@ -75,7 +83,7 @@ def edit_prescreen(request, patient_id):
             #next = _get_next(request)
             
             #messages.add_message(request, messages.INFO, 'Prescreen record updated for Patient %s.' %patient_id)
-            return HttpResponseRedirect('/search') 
+            return HttpResponseRedirect('/prsearch') 
                       
     else:
         form = PrescreenForm(instance=ent)                        
@@ -92,8 +100,7 @@ def list_prescreen(request):
     #    patients = Ptmaster.objects.exclude(absstatus__isnull='PRESCREENOK')
     patients = Ptmaster.objects.exclude(absstatus__isnull=False)
     #patients = Ptmaster.objects.all()
-    
-            
+                
     variables = RequestContext(request, {
     'form': form,
     'patients': patients,
@@ -117,14 +124,24 @@ def edit_abstract(request, patient_id):
         message = 'edit patient abstraction entry' 
         form =  AbstractionForm()                   
      
-    if request.method == 'POST':       
+    if request.method == 'POST': 
+        # Check for possible Cancel Request
+        # Test the value of the ['Action'] field
+        if request.POST['submit']=='Cancel':
+            # return to prev screen
+            #assert False  
+            return HttpResponseRedirect('/abstract') 
+            
         #create and populate a form    
         form =  AbstractionForm( data=request.POST, instance=ent)                  
         if form.is_valid():
             # ?? Use RE Validation on zip code; MRN ?? 
             p = form.save(commit=False)
             p.save()
-            return HttpResponseRedirect('/search') 
+            # Redirect to Referer??
+            # Display Confirmation Message
+            #assert False
+            return HttpResponseRedirect('/abstract') 
                       
     else:
         form = AbstractionForm(instance=ent)                        
@@ -134,14 +151,8 @@ def edit_abstract(request, patient_id):
                                  
 def edit_dxcode(request, code_id):
     # edit diagnosis code
-
-    #ent = get_object_or_404(Ptdx, pk = int(code_id)
     ent = get_object_or_404(Ptdx, id = code_id)
-    
-    #ent = get_object_or_404(Ptdx, pk = 1)
-    
-    #assert False
-    
+        
     if request.method == 'GET':
         #create a form to edit a record
         message = 'edit diagnosis code' 
@@ -154,10 +165,9 @@ def edit_dxcode(request, code_id):
             # ?? Use RE Validation on zip code; MRN ?? 
             p = form.save(commit=False)
             p.save()
-            return HttpResponseRedirect('/search')                       
+            return HttpResponseRedirect('/dxsearch')                       
     else:
         form = DxForm(instance=ent)  
-        #form = DxForm()  
                               
     return render_to_response('dx_form.html',
                                  {'form':form, 'add':False})   
@@ -170,7 +180,6 @@ def add_dxcode(request, patient_id):
                   
 def edit_ptdetails(request, id):
 
-    #ent = get_object_or_404(Ptdetails, id = 1)
     # find selected 
     #assert False
     ent = get_object_or_404(Ptdx, id = id)
@@ -181,46 +190,30 @@ def edit_ptdetails(request, id):
         message = 'edit details code'
         #assert False
         form =  DtlsForm()                   
-        # replace with CstmDtlsForm (4/20/10 - Not Required - Confirm)
-        #form =  CstmDtlsForm()                   
      
     if request.method == 'POST':       
         #create and populate a form    
         form =  DtlsForm( data=request.POST, instance=ent)                  
-        #form =  CstmDtlsForm( data=request.POST, instance=ent)                  
         if form.is_valid():
             # ?? Use RE Validation on zip code; MRN ?? 
             p = form.save(commit=False)
             p.save()
             # on redirect need to pass confirmation message
-            # msg = 'Record Successfully Updated' - (redirect to previous screen?)
-            # ?? render_to_response vs redirect ??
-	    
-	    # extract id value from url
-	    #id = urlparse.urlparse(request.url).path.split('/')[-1]
-	    
-	    pl = urlparse.urlparse(request.META.get('HTTP_REFERER', None)).path.split('/')[-1]
-	    
-	    #url = request.META.get('HTTP_REFERER', None)
-	    #pl = urlparse.urlparse(url)
-	    #id = pl.path.split('/')[-1]
-	    
-            #msg_confirm = 'Dtls Entry %s successfully updated' %request.POST['id'] 
-            #msg_confirm = 'Diagnosis Details Entry %s successfully updated' %id 
+            # msg = 'Record Successfully Updated' - (redirect to previous screen?)	
             
+            # make this a helper method    
+    	    # extract id value from url	    
+    	    #pl = urlparse.urlparse(request.META.get('HTTP_REFERER', None)).path.split('/')[-1]	
+    	    
+    	    recid = _get_id_from_url(request)    
+    	    #url = request.META.get('HTTP_REFERER', None)	                
             # Create a session entry for this
-            request.session['confirm'] = 'Dx Details Update for record #%s Successful' %pl
-                        
-            # use urlparse to access the id key (or get via a hidden field)                       
-            #return HttpResponseRedirect('/dxsearch/' + msg_confirm)        
+            request.session['confirm'] = 'Dx Details Update for record #%s Successful' %recid                        
             return HttpResponseRedirect('/dxsearch' )        
                            
     else:
-        #form = CstmDtlsForm(instance=ent)  
         form = DtlsForm(instance=ent)  
                              
-    #return render_to_response('ptdetails_form.html',
-    #                             {'form':form, 'add':False})   
     return render_to_response('dx_custom_form.html',
                                  {'form':form, 'add':True}) 
                                               
@@ -232,9 +225,8 @@ def add_ptdetails(request, pid):
 
     if request.method == 'POST':       
         #create and populate a form    
-#        form =  DtlsForm( data=request.POST, instance=ent)    
+        #form =  DtlsForm( data=request.POST, instance=ent)    
         form =  DtlsForm( data=request.POST)    
-        #form =  CstmDtlsForm( data=request.POST)    
                       
         if form.is_valid():
             # Create new PtDx entry 
@@ -243,17 +235,12 @@ def add_ptdetails(request, pid):
             
             new_dtls = form.save(commit= False)
             new_dtls.ptmaster_id = pid
-            new_dtls.save()
-#            p = form.save(commit=False)
-#            p.save()
-#            return HttpResponseRedirect('/search') 
-#            return HttpResponseRedirect(new_dtls.get_absolute_url()) 
-            # ?? Where to go after save ??
-#            return HttpResponseRedirect(new_dtls.get_absolute_url()) 
+            new_dtls.save()           
 
+            # ?? Where to go after save ??
+            # return HttpResponseRedirect(new_dtls.get_absolute_url()) 
             # save and return to calling screen
-            return HttpResponseRedirect('/dxsearch') 
-                                             
+            return HttpResponseRedirect('/dxsearch')                                              
     else:
         # Form has errors 
         form = DtlsForm(data=request.POST) 
@@ -514,26 +501,10 @@ def  get_icd9_codes(request):
 	q1 = "\'" + request.GET['q']
 	dxcodes = Icd9Base.objects.filter(icd9cm_code__istartswith=q1)[:100]
 	
-	#dxcodes = Icd9Base.objects.filter(icd9cm_code__istartswith=request.GET['q'])[:100]	
-	#dxcodes = Icd9Base.objects.filter(icd9cm_code__istartswith=request.GET['q'])[:10]
-	#dxcodes = Icd9Base.objects.filter(short_description__istartswith=request.GET['q'])[:100]
-	#dxcodes = Icd9Base.objects.filter(icd9cm_code__contains=request.GET['q'])[:10]
-
-	# ?? need to return Json data - one result per line  ??
 	# strip off leading and trailing chars
 	rslt = [dxcode.icd9cm_code[1:-1] + ';' + dxcode.short_description for dxcode in dxcodes]
 	return HttpResponse(u'\n'.join(rslt))
-	# these  below don't work
-	#return  HttpResponse(u'\n\'.join([dxcode.icd9cm_code[1:-1] + ';' + dxcode.short_description for dxcode in dxcodes]))
-	#return HttpResponse(u'\n'.join(dxcode for dxcode in dxcodes))
-	#return  HttpResponse(u'\n\'.join([dxcode.icd9cm_code[1:-1] + ';' + dxcode.short_description for dxcode in dxcodes]))
-	#return HttpResponse(u'\n'.join(dxcode.icd9cm_code[1:-1] for dxcode in dxcodes))
-	# include descr in display also
-	
-
-	#return HttpResponse(u'\n'.join(dxcode.short_description for dxcode in dxcodes))
-    return HttpResponse()    
-        
+	        
         
 def  get_icd9_codes_test (request):
     # Ajax request to lookup diag codes - return space filled list
