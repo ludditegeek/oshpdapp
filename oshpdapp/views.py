@@ -68,7 +68,19 @@ def edit_prescreen(request, patient_id):
         form =  PrescreenForm( data=request.POST, instance=ent)
         # How to check for checkbox style fields - check if in request[params]
         srcp = False
-         
+        
+        # Check for possible Cancel Request
+        # Test the value of the ['Action'] field
+        if request.POST['submit']=='Cancel':
+            # return to prev screen
+            #assert False  
+            # clean up any conf msg
+            try:
+                 del request.session['confirm']
+            except (KeyError, ValueError):
+                pass            
+            return HttpResponseRedirect('/prsearch') 
+                         
         if form.is_valid():
             p = form.save(commit=False)
             # Set default value
@@ -80,9 +92,9 @@ def edit_prescreen(request, patient_id):
             p.save()
             # this is confusing - when to use reverse?
             # create confirmation message
-            #next = _get_next(request)
-            
-            #messages.add_message(request, messages.INFO, 'Prescreen record updated for Patient %s.' %patient_id)
+    	    recid = _get_id_from_url(request)    
+            # Create a session entry for message and pass on - template should check and display this
+            request.session['confirm'] = 'PreScreen Details Update for record #%s Successful' %recid                        
             return HttpResponseRedirect('/prsearch') 
                       
     else:
@@ -130,6 +142,11 @@ def edit_abstract(request, patient_id):
         if request.POST['submit']=='Cancel':
             # return to prev screen
             #assert False  
+            # clean up any conf msg
+            try:
+                 del request.session['confirm']
+            except (KeyError, ValueError):
+                pass            
             return HttpResponseRedirect('/abstract') 
             
         #create and populate a form    
@@ -141,8 +158,10 @@ def edit_abstract(request, patient_id):
             # Redirect to Referer??
             # Display Confirmation Message
             #assert False
-            return HttpResponseRedirect('/abstract') 
-                      
+    	    recid = _get_id_from_url(request)    
+            # Create a session entry for message and pass on - template should check and display this
+            request.session['confirm'] = 'Abstraction Update for record #%s Successful' %recid                        
+            return HttpResponseRedirect('/abstract')                      
     else:
         form = AbstractionForm(instance=ent)                        
     return render_to_response('abstraction_form.html',
@@ -206,8 +225,7 @@ def edit_ptdetails(request, id):
     	    #pl = urlparse.urlparse(request.META.get('HTTP_REFERER', None)).path.split('/')[-1]	
     	    
     	    recid = _get_id_from_url(request)    
-    	    #url = request.META.get('HTTP_REFERER', None)	                
-            # Create a session entry for this
+            # Create a session entry for message and pass on - template should check and display this
             request.session['confirm'] = 'Dx Details Update for record #%s Successful' %recid                        
             return HttpResponseRedirect('/dxsearch' )        
                            
@@ -407,6 +425,8 @@ def search_patient_pr(request):
     form = SearchForm()
     patients = []
     show_results = False
+    messages = ""
+      
     if 'query' in request.GET:
         show_results = True
         query = request.GET['query'].strip()
@@ -416,6 +436,15 @@ def search_patient_pr(request):
         else:
             error = True
             
+   # retrieve session info  - then clear it
+    confirmation = "" 
+    msgtext = ""     
+    try:
+        confirmation += request.session['confirm']
+        del request.session['confirm']
+    except (KeyError, ValueError):
+        pass            
+            
     variables = RequestContext(request, {
     'form': form,
     'caller': caller,        
@@ -423,7 +452,8 @@ def search_patient_pr(request):
     'show_results': show_results,
     'show_tags': True,
     'show_user': True,
-    'error': error
+    'error': error,
+    'msgs': confirmation    
     })
     
     # ?? Select different template based on where user came from
