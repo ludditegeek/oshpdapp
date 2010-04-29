@@ -208,22 +208,29 @@ def edit_ptdetails(request, id):
         #create a form to edit a record  
         message = 'edit details code'
         #assert False
-        form =  DtlsForm()                   
-     
+        form =  DtlsForm()   
+             
     if request.method == 'POST':       
+
+        # Check for possible Cancel Request
+        # Test the value of the ['Action'] field
+        if request.POST['submit']=='Cancel':
+            # return to prev screen
+            #assert False  
+            # clean up any conf msg
+            try:
+                 del request.session['confirm']
+            except (KeyError, ValueError):
+                pass            
+            return HttpResponseRedirect('/prsearch') 
+
         #create and populate a form    
-        form =  DtlsForm( data=request.POST, instance=ent)                  
+        form =  DtlsForm( data=request.POST, instance=ent)                                          
         if form.is_valid():
             # ?? Use RE Validation on zip code; MRN ?? 
             p = form.save(commit=False)
             p.save()
-            # on redirect need to pass confirmation message
-            # msg = 'Record Successfully Updated' - (redirect to previous screen?)	
-            
-            # make this a helper method    
-    	    # extract id value from url	    
-    	    #pl = urlparse.urlparse(request.META.get('HTTP_REFERER', None)).path.split('/')[-1]	
-    	    
+                	    
     	    recid = _get_id_from_url(request)    
             # Create a session entry for message and pass on - template should check and display this
             request.session['confirm'] = 'Dx Details Update for record #%s Successful' %recid                        
