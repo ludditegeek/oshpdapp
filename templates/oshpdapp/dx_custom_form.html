@@ -8,39 +8,17 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-<script type="text/javascript"
-	src="/site_media/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="/site_media/jquery.autocomplete.js"></script>
 
 <link rel="stylesheet"  href="/site_media/jquery.autocomplete.css" media="screen" type="text/css" />
+
+<style> #id_icd9codedscr {width: 400px; }
+</style>
 
 {% endblock  %}
 
 
 {% block content %}
-
-
-<style>
-fieldset {
-width: 500px;
-}
-.testSubject {
-border: 2px solid black;
-background-color: white;
-padding: 8px;
-}
-.matched {
-border: 4px solid maroon;
-background-color: khaki;
-}
-button {
-width: 200px;
-}
-
-legend {
-font-size:large;
-font-weight: bold;
-}
-</style>
 
 <form method="post" action=""> {% if form.errors %}
   <p style="color: red;"> Please correct the error{{

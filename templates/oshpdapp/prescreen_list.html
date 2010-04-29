@@ -3,16 +3,23 @@
 {% block content %}
 
 
-<ul>
-    <table  border="1">
+{% if error %}
+    <p style="color: red;" class="searcherror">Please submit a search term.</p>
+        
+{% else %}        
+  
+
+<fieldset>
+<legend>Prescreen Search Results</legend>
+    <table class="sresults">
 	<tr>  
-	   <td>id</td>
-           <td>ssn</td> 
-           <td>dob</td> 
-	   <td>admdate</td> 
-           <td>dschdate</td>
-           <td>abstatus</td>
-           <td colspan=2>Modify</td>
+	   <th>id</th>
+           <th>ssn</th> 
+           <th>dob</th> 
+	       <th>admdate</th> 
+          <th>dschdate</th>
+           <th>abstatus</th>
+           <th colspan="2">Modify</th>
 	</tr>
         {% for item in patients %}
         <tr>
@@ -27,6 +34,8 @@
         {% endfor %}
     </>
     </table>
-<ul>
+</fieldset>
 
+{%endif%}
+<ul>
 {% endblock %}

@@ -1,0 +1,110 @@
+body {width: 500px;
+}
+
+table {
+    border:0;
+    border-collapse: collapse;
+    border-style:solid; 
+    border-color: blue
+    font: normal 12px 'Lucida Grande', Verdana, sans-serif;
+}
+
+
+td, tr {
+    padding: 6px;
+    border-style: none;
+    border: 0;
+}
+
+.datatable td {
+    border: 0;
+    border-color:red;    
+    }
+    
+tr {
+    background: #DDDDDD;
+}
+
+
+form { 
+  margin:0; 
+  padding:0; 
+  } 
+  
+fieldset { 
+  margin:0 0 10px 0; 
+  padding:5px; 
+  border:1px solid #333; 
+  background: #DDDDDD;
+  #width: 500px;
+  border-color:blue; 
+  }
+  
+legend { 
+  background: #DDDDDD; 
+  margin: 0; 
+  padding:0 10px 0 10px ; 
+  border-style:solid; 
+  border-width:1px; 
+  #border-color:#FFF #AAA #666 #FFF; 
+  border-color:blue; 
+  } 
+  
+th { text-align: left;
+     font-weight: normal;
+   }
+  
+  
+thx>label { 
+  position:relative;
+  font-weight:bold;
+  text-align: left; 
+  } 
+  
+  
+#name, #email, #message, #subject { 
+  width:100%; 
+  }
+   
+input, textarea { 
+  border:3px double #333 width: 100%; 
+  }
+    
+    
+	
+/* Align search panel with search results */	
+  #search-results  {
+  	    margin:10px 0 0 -40px;
+  	}
+  	
+  .search {
+  	    margin:10px 10px 0 0;
+  	}
+
+textarea { width: 400px;
+	}
+
+td>input { width: 150px;
+	}
+	
+.sresults {
+         width: 200px;
+         border-style:solid;
+         border: 0px;
+    }	
+    
+.searcherror {
+    margin-left: 40px;
+}
+table .frm_prescreen td{ width: 15px;
+                   border: 5; dashed ;
+	}
+
+.memoclass { width: 100px;
+	}
+  	
+.chkclass { width: 15px;
+border-left: 1px solid #C1DAD7;
+}    
+    
+

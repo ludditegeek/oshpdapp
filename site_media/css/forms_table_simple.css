@@ -1,0 +1,17 @@
+th {border-style: solid;
+    border-color: black; 
+    padding: 15px;
+    }   
+
+th {border-style: none;
+    border-color: black; 
+    padding: 2px;
+    }  
+      
+td {border-style: none;
+    border-color: black; 
+    padding: 2px;
+    }      
+          
+
+		

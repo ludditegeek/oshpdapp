@@ -5,16 +5,15 @@
         
 {% else %}        
   
-<ul>
 <fieldset>
-<legend>Diagnostic Entries</legend>
-    <table border="1" >
+<legend>Diagnostic Search Results</legend>
+    <table class="sresults" >
 	<tr>  
-           <td>ssn</td>
-           <td>code type</td> 
-          <td>code status</td>           
-           <td>code dscr</td> 
-           <td colspan=2>Modify</td>
+           <th>ssn</th>
+           <th>code type</th> 
+           <th>code status</th>           
+           <th>code dscr</th> 
+           <th colspan=2>Modify</th>
 	</tr>
         {% for item in dxcodes %}
         <tr>
@@ -31,7 +30,6 @@
     </table>
     <p/>
 </fieldset>
-<ul>
 
 {% endif %}
 

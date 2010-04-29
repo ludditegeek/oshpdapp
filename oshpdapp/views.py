@@ -211,7 +211,6 @@ def edit_ptdetails(request, id):
         form =  DtlsForm()   
              
     if request.method == 'POST':       
-
         # Check for possible Cancel Request
         # Test the value of the ['Action'] field
         if request.POST['submit']=='Cancel':
@@ -222,7 +221,7 @@ def edit_ptdetails(request, id):
                  del request.session['confirm']
             except (KeyError, ValueError):
                 pass            
-            return HttpResponseRedirect('/prsearch') 
+            return HttpResponseRedirect('/dxsearch') 
 
         #create and populate a form    
         form =  DtlsForm( data=request.POST, instance=ent)                                          
@@ -336,13 +335,6 @@ def test(request):
     form = TForm()      # Create Unbound form
     # How to set initial values??
     form.name = 'aaa'
-    
-    #assert False # for debugging
-
-#    variables = RequestContext(request, {
-#    'form': form,
-#    'error': error
-#    })
   
     return render_to_response('test_form.html', {'form': form,})
     
@@ -368,7 +360,8 @@ def search_patient_dx(request):
             #form = SearchForm({'query' : query})
             form = SearchForm({'query' : query, 'messages' : messages})
             # lookup that spans relationships (implicit join)
-            dxcodes = Ptdx.objects.filter(ptmaster__ssn__startswith=query) 
+            # Sort results in SSN order
+            dxcodes = Ptdx.objects.filter(ptmaster__ssn__startswith=query).order_by('ptmaster__ssn') 
             try: 
                 patient = dxcodes[0].ptmaster_id
             except ValueError:
@@ -378,15 +371,7 @@ def search_patient_dx(request):
             # User failed to enter a search value
             #assert False
             error = True
-
-    # get conf text from (from url parm  (PATH_INFO) or session object)            
-	#msg = urlparse.urlparse(request.META.get('HTTP_REFERER', None)).path.split('/')[-1]
-    #pathinfo = request.META.get('PATH_INFO', None).split('/')
-    #try:    
-    #    confirmation = pathinfo[2]
-    #except ValueError:
-    #    confirmation =""
-        
+      
     # retrieve session info  - then clear it
     confirmation = "" 
     msgtext = ""     
@@ -439,10 +424,15 @@ def search_patient_pr(request):
         query = request.GET['query'].strip()
         if query:
             form = SearchForm({'query' : query})
-            patients = Ptmaster.objects.filter(ssn__startswith=query)            
+            patients = Ptmaster.objects.filter(ssn__startswith=query)
+            try: 
+                patient = patients[0].id
+            except ValueError:
+                # no data found
+                error = True                       
         else:
             error = True
-            
+                                    
    # retrieve session info  - then clear it
     confirmation = "" 
     msgtext = ""     
