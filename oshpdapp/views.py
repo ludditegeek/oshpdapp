@@ -181,6 +181,9 @@ def edit_dxcode(request, code_id):
         #create and populate a form    
         form =  DxForm( data=request.POST, instance=ent)                  
         if form.is_valid():
+            # TODO - Add validation checks and populate error message array
+            # for display in template
+            #
             # ?? Use RE Validation on zip code; MRN ?? 
             p = form.save(commit=False)
             p.save()
@@ -227,12 +230,13 @@ def edit_ptdetails(request, id):
         form =  DtlsForm( data=request.POST, instance=ent)                                          
         if form.is_valid():
             # ?? Use RE Validation on zip code; MRN ?? 
+            # set error messages here - pass to template
             p = form.save(commit=False)
             p.save()
                 	    
     	    recid = _get_id_from_url(request)    
             # Create a session entry for message and pass on - template should check and display this
-            request.session['confirm'] = 'Dx Details Update for record #%s Successful' %recid                        
+            request.session['confirm'] = 'Dx Details Update for record #%s Successful' %recid          
             return HttpResponseRedirect('/dxsearch' )        
                            
     else:
@@ -255,7 +259,8 @@ def add_ptdetails(request, pid):
         if form.is_valid():
             # Create new PtDx entry 
             # Init with parent patient id etc.
-            # 
+            # Apply validation rules here - populate error array 
+# for display via template
             
             new_dtls = form.save(commit= False)
             new_dtls.ptmaster_id = pid

@@ -20,10 +20,16 @@
 
 {% block content %}
 
-<form method="post" action=""> {% if form.errors %}
-  <p style="color: red;"> Please correct the error{{
-form.errors|pluralize }} below. </p>
+
+{% if errors %}
+    <p> Validation Error Found - please correct <p>
+    {% for error in errors %}
+    <p> Validation Error </p>
+    {% endfor %}
 {% endif %}
+
+
+<form method="post" action=""> 
 
 <fieldset>
 <legend>Conditions</legend>

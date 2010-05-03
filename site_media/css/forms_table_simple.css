@@ -1,17 +1,78 @@
-th {border-style: solid;
+table  {
+    border: 2px; 
     border-color: black; 
-    padding: 15px;
-    }   
-
-th {border-style: none;
-    border-color: black; 
+    border-style: solid;  
     padding: 2px;
+    //border-collapse: collapse;
+    //background-color: #FF0;
+    //background-color: aqua;
+    background-color: #D2FFD2;
+
+}
+th, td {
+    border: 1px; 
+    border-color: blue; 
+    border-style: none;  
+    padding: 5px;    
+}
+
+.sresults  {
+    border: 2px; 
+    border-color: black; 
+    border-style: solid;  
+    padding: 2px;
+    border-collapse: collapse;
+    background-color: #D2FFD2;
+
+}
+
+.sresults th {border-style: solid;
+    border-color: blue; 
+    padding: 5px;
+    border-width: 1px;    
     }  
       
-td {border-style: none;
-    border-color: black; 
-    padding: 2px;
-    }      
-          
+.sresults td {
+    border: 1px; 
+    border-color: blue; 
+    border-style: solid;  
+    //border-collapse: collapse;
+    //border-width: 5px;
+    padding: 5px;    
+}
 
+label {
+    font-weight: normal;
+}
+
+input[disabled], input[readonly], select[disabled], select[readonly], checkbox[disabled], checkbox[readonly], textarea[disabled], textarea[readonly] 
+{ 
+ background-color: #dcdcdc; 
+ border: #3532ff 1px solid; 
+ color: #000000; 
+ cursor: default; 
+}
+
+zzfieldset{ 
+border: 1px black solid; 
+border-radius: 5px; 
+} 
+
+fieldset{
+	//background-color:#fff9e7;
+	border: 1px black solid;
+    border-radius: 5px; 	
+	border-width:2px;
+	border-style:solid;
+	//border-color:#7c5b47;
+	
+	//font-family:Verdana, Arial, Helvetica, sans-serif;
+	//font-size:12px;
 		
+	margin:20px 0px 20px 0px;
+	width: 550px;
+	position:relative;
+	display:block;
+	padding: 10px 10px 10px 10px;
+}
+          
