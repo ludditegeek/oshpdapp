@@ -1,12 +1,13 @@
 table  {
-    border: 2px; 
-    border-color: black; 
+    border: 1px; 
+    border-color: blue; 
     border-style: solid;  
     padding: 2px;
     //border-collapse: collapse;
     //background-color: #FF0;
     //background-color: aqua;
     background-color: #D2FFD2;
+    //width: 500px;
 
 }
 th, td {
@@ -17,8 +18,8 @@ th, td {
 }
 
 .sresults  {
-    border: 2px; 
-    border-color: black; 
+    border: 1px; 
+    border-color: blue; 
     border-style: solid;  
     padding: 2px;
     border-collapse: collapse;
@@ -62,7 +63,7 @@ fieldset{
 	//background-color:#fff9e7;
 	border: 1px black solid;
     border-radius: 5px; 	
-	border-width:2px;
+	border-width:1px;
 	border-style:solid;
 	//border-color:#7c5b47;
 	
@@ -70,9 +71,16 @@ fieldset{
 	//font-size:12px;
 		
 	margin:20px 0px 20px 0px;
-	width: 550px;
 	position:relative;
 	display:block;
 	padding: 10px 10px 10px 10px;
 }
           
+#frm_abstract {
+<div id="frm_abstract">
+    width=550px;
+}
+
+#tblerr {
+    width= 200px;
+}

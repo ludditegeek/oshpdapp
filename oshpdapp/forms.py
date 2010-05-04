@@ -2,12 +2,6 @@ from django import forms
 from oshpdapp.models import *
 from django.forms import ModelForm
 
-###
-
-
-# MOdified w Epp Pro
-
-
 class   PrescreenForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -35,12 +29,6 @@ class   PrescreenForm(forms.ModelForm):
 
     #ADM_CHOICES= (('M', 'Male'),('F', 'Female'), ('U', 'Ukn'))
 
-    # define patient form layout
-    # lname = forms.CharField(widget= forms.TextInput)
-    #bthdate = forms.DateField(widget=SelectDateWidget())
-    #sex = forms.CharField(choices=SEX_CHOICES)
-    #ethncty = forms.CharField(widget=forms.TextInput) 
-    #ethncty = forms.ModelChoiceField(queryset=Codetbl.objects.filter(codetype='codetype'))
 
     memo = forms.CharField(max_length=255,  widget=forms.Textarea)
     # Display Date (w/out time)
@@ -154,26 +142,56 @@ class   DtlsForm(forms.ModelForm):
     # Code Status Choices
     codetype = forms.CharField(max_length=255,  widget=forms.Select(choices=ctypechoices))            
     codestatus = forms.CharField(max_length=255,  widget=forms.Select(choices=cstatchoices))
-    diagcpaa = forms.CharField(max_length=255, widget=forms.Select(choices=cpaachoices)) 
-	     	    
+    diagcpaa = forms.CharField(max_length=255, widget=forms.Select(choices=cpaachoices), required=True) 
 
- # Form to collect patient details/dx code info
-    memo = forms.CharField(max_length=255,  widget=forms.Textarea)
+    diagcodeicd9 = forms.CharField(max_length=12,  widget=forms.TextInput,
+                              error_messages={'required':'ICD9 Code is required - select from list'}) 
+
+    # Form to collect patient details/dx code info
+    # Specify custom error validation message text
+    memo = forms.CharField(max_length=255,  widget=forms.Textarea,
+            required=True, error_messages={'required':'Memo Field cannot be empty'})
+
+    # Define validation rules
+    # Rqd fields are: ICD9 code (via lookup); Memo Field 
+    # these are defined in the form class = *Not in the View*
+    def clean(self):
+        # (We only get here if no prior error found
+
+        cleaned_data = self.cleaned_data
+        memo = cleaned_data.get('memo')
+
+        icd9 = cleaned_data.get('diagcodeicd9')
+
+        errstr =''
+        if memo == None or memo=='':
+            errstr +=  ' Memoxxx field is required'
+            #self.errors.append('Memo field is required')
+            #raise forms.ValidationError ("Memo field is required")
+
+        if icd9 == None or icd9=='':
+            errstr +=  ', ICD9xxx field is required'
+                #self.errors.append('ICD9 code is required')
+                #raise forms.ValidationError ("ICD9 code is required")
+
+        if errstr!='':
+            pass
+            #raise forms.ValidationError (errstr)
+
+        return self.cleaned_data
+
 
     class Meta:
-        #model = Ptdetails 
         model = Ptdx 
         
         # specify subset of fields on this form - fields are displayed in the order specified                      
-        #fields = ('id', 'studyid', 'dxseq'
-        #          )
         
         fields = ('codetype', 'codestatus', 'diagcpaa',
                  'diagcodeicd9',                   
                  'icd9codedscr','memo'
                   )
                     
-        
+# *****************  Redundant - use Dtls form instead *******************        
 class   CstmDtlsForm(forms.Form):
     # Custom Form for dtls entry - 
     # Note does not use forms.ModelForm as we need to customize this

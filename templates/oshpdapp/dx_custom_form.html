@@ -12,7 +12,7 @@
 
 <link rel="stylesheet"  href="/site_media/jquery.autocomplete.css" media="screen" type="text/css" />
 
-<style> #id_icd9codedscr {width: 400px; }
+<style> #id_icd9codedscr {width: 300px; }
 </style>
 
 {% endblock  %}
@@ -20,14 +20,37 @@
 
 {% block content %}
 
+    {% if form.non_field_errors %}
+            <p>Non Field Error found</p>
+            <p><span class="error">
+                {{ form.non_field_errors|join:", "}}
+            </p>
+                <p><span class="error">
+                    {% for error in form.non_field_errors %}
+                        <p> Non Field error</p>
+                    {{ error }}
+                {% endfor %}
+               </p>
+    {% endif %}
 
 {% if errors %}
-    <p> Validation Error Found - please correct <p>
-    {% for error in errors %}
-    <p> Validation Error </p>
-    {% endfor %}
-{% endif %}
+       <p style="color: red;"> <strong> Validation Error(s) found:</strong> </p>
+    
+    <ol>
+    {% if form.memo.errors %}
+        {% for error in form.memo.errors %}
+            <li style="color: red;"><strong> {{ error|escape }}</strong></li>
+        {% endfor %}
+    {% endif %}
 
+    {% if form.diagcodeicd9.errors %}
+        {% for error in form.diagcodeicd9.errors %}
+            <li style="color: red;"><strong> {{ error|escape }}</strong></li>
+        {% endfor %}
+    {% endif %}
+    </ol>
+
+{% endif %}
 
 <form method="post" action=""> 
 
@@ -54,19 +77,21 @@
 
 <fieldset>
 
-<legend>ICD9 Codes</legend>
-  <table>
+  <legend>ICD9 Codes (* => required field)</legend>
+  <table >
       <tr>
-        <th><label for="id_diagcodeicd9">ICD9 Code:</label></th>
+        <th><label for="id_diagcodeicd9">ICD9 Code(*):</label></th>
         <td>{{form.diagcodeicd9}}</td>
+        <td class="tblerr">{{form.diagcodeicd9.errors}}</td>
       </tr>
       <tr>
-        <th><label for="id_icd9codedscr">ICD9 Description:</label></th>
+        <th><label for="id_icd9codedscr">ICD9 Description(*):</label></th>
         <td>{{form.icd9codedscr}}</td>
       </tr>
       <tr>
-        <th><label for="id_memo">Memo:</label></th>
+        <th><label for="id_memo">Memo(*):</label></th>
         <td>{{form.memo}}</td>
+        <td class="tblerr">{{form.memo.errors}}</td>
       </tr>
     </tbody>
   </table>

@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<title>{% if add %} Add new {% else %}Edit selected {% endif %} patient details; </title>
+<div id="frm_abstract">
+</div>
 
 <fieldset>
 
@@ -56,7 +57,7 @@
  <fieldset>
  <legend>Ethnicity/Race Info - Check all applicable </legend>
 
-<table>      
+<table >      
       <tr>
         <th colspan="2" ><label for="id_ethncty">Ethnicity:</label></th>
         <td colspan="4" id="id_ethncty">{{form.ethncty}}</td> 
@@ -81,11 +82,9 @@
         <th colspan="4"><label for="id_raceunk"  >Unknown:</label></th>
         <td colspan="2">{{form.raceunk}}</td>                
       </tr>
-                     
                 
  </table>
  </fieldset>
- 
 
 <p>
 <input type="submit" name = "submit" value="Save Changes" />
@@ -93,4 +92,5 @@
 </p>
 </form>
 
+</div>
 {% endblock %}

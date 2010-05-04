@@ -15,10 +15,10 @@ class Codetbl(models.Model):
     id = models.IntegerField(primary_key=True)
     #id = models.AutoField(primary_key=True)
     dspseq = models.IntegerField(null=True, blank=True)
-    codetype = models.TextField(blank=False) # This field type is a guess.
-    codesubtype = models.TextField(blank=True) # This field type is a guess.
-    codeval = models.TextField(blank=False) # This field type is a guess.
-    codedscr = models.TextField(blank=False) # This field type is a guess.
+    codetype = models.TextField(blank=False)
+    codesubtype = models.TextField(blank=True)
+    codeval = models.TextField(blank=False)
+    codedscr = models.TextField(blank=False)
     class Meta:
         db_table = u'codetbl'
         
@@ -31,8 +31,8 @@ class Codetbl(models.Model):
     def get_code_choices(cls,codetype):
         
         clist = []
-        #clist =( Codetbl.objects.filter(codetype=codetype).order_by('dspseq'))    
-        clist =( cls.objects.filter(codetype=codetype).order_by('dspseq'))    
+        #clist =( Codetbl.objects.filter(codetype=codetype).order_by('dspseq'))
+        clist =( cls.objects.filter(codetype=codetype).order_by('dspseq'))
                 
         ec  = []    # entity choices
         for i in range(len(clist)):
@@ -44,13 +44,13 @@ class Codetbl(models.Model):
 
 class Icd9Base(models.Model):
     id = models.IntegerField(primary_key=True)
-    icd9cm_code = models.CharField(max_length=12, db_column=u'ICD9CM_CODE', blank=True) # Field name made lowercase.
-    validity = models.CharField(max_length=255, db_column=u'VALIDITY', blank=True) # Field name made lowercase.
-    short_description = models.CharField(max_length=255, db_column=u'SHORT_DESCRIPTION', blank=True) # Field name made lowercase.
-    long_description = models.CharField(max_length=255, db_column=u'LONG_DESCRIPTION', blank=True) # Field name made lowercase.
-    full_description = models.CharField(max_length=255, db_column=u'FULL_DESCRIPTION', blank=True) # Field name made lowercase.
-    status = models.CharField(max_length=255, db_column=u'STATUS', blank=True) # Field name made lowercase.
-    type = models.IntegerField(null=True, db_column=u'TYPE', blank=True) # Field name made lowercase.
+    icd9cm_code = models.CharField(max_length=12, db_column=u'ICD9CM_CODE', blank=True)
+    validity = models.CharField(max_length=255, db_column=u'VALIDITY', blank=True)
+    short_description = models.CharField(max_length=255, db_column=u'SHORT_DESCRIPTION', blank=True)
+    long_description = models.CharField(max_length=255, db_column=u'LONG_DESCRIPTION', blank=True)
+    full_description = models.CharField(max_length=255, db_column=u'FULL_DESCRIPTION', blank=True)
+    status = models.CharField(max_length=255, db_column=u'STATUS', blank=True)
+    type = models.IntegerField(null=True, db_column=u'TYPE', blank=True)
     class Meta:
         db_table = u'icd9base'
     
@@ -64,13 +64,13 @@ class Icd9Base(models.Model):
 
 class OshdUsers(models.Model):
     id = models.IntegerField(primary_key=True)
-    userid = models.CharField(max_length=12, db_column=u'UserID', blank=True) # Field name made lowercase.
-    password = models.CharField(max_length=8, db_column=u'Password', blank=True) # Field name made lowercase.
-    lname = models.CharField(max_length=25, db_column=u'Lname', blank=True) # Field name made lowercase.
-    fname = models.CharField(max_length=25, db_column=u'Fname', blank=True) # Field name made lowercase.
-    lastlogon = models.DateTimeField(null=True, db_column=u'LastLogon', blank=True) # Field name made lowercase.
-    lastlogoff = models.DateTimeField(null=True, db_column=u'LastLogoff', blank=True) # Field name made lowercase.
-    loggedon = models.SmallIntegerField(db_column=u'LoggedOn') # Field name made lowercase.
+    userid = models.CharField(max_length=12, db_column=u'UserID', blank=True)
+    password = models.CharField(max_length=8, db_column=u'Password', blank=True)
+    lname = models.CharField(max_length=25, db_column=u'Lname', blank=True)
+    fname = models.CharField(max_length=25, db_column=u'Fname', blank=True)
+    lastlogon = models.DateTimeField(null=True, db_column=u'LastLogon', blank=True)
+    lastlogoff = models.DateTimeField(null=True, db_column=u'LastLogoff', blank=True)
+    loggedon = models.SmallIntegerField(db_column=u'LoggedOn')
     class Meta:
         db_table = u'oshd_users'
 
@@ -85,79 +85,79 @@ class Ptdetails(models.Model):
 
     # Define choices based on codetable entries
     # Code Status Choices
-    cstatchoices = Codetbl.get_code_choices('CODESTATUS')    
+    cstatchoices = Codetbl.get_code_choices('CODESTATUS')
     # Condition Present At Admission
-    cpaachoices = Codetbl.get_code_choices('CPAATYPE')    
+    cpaachoices = Codetbl.get_code_choices('CPAATYPE')
     # Code Type Choices (Diag/Pcode/Ecode)
-    ctypechoices = Codetbl.get_code_choices('CODETYPE')    
+    ctypechoices = Codetbl.get_code_choices('CODETYPE')
 
     id = models.IntegerField(primary_key=True)
-    studyid = models.IntegerField(null=True, db_column=u'StudyId', blank=True) # Field name made lowercase.
-    codetype = models.CharField(choices= ctypechoices, max_length=12, db_column=u'CodeType', blank=True) # Field name made lowercase.
-    codevalue = models.CharField(max_length=12, db_column=u'CodeValue', blank=True) # Field name made lowercase.
-    codestatus = models.CharField(choices= cstatchoices, max_length=12, db_column=u'CodeStatus', blank=True, verbose_name='Principal/Other') # Field name made lowercase.
-    diagcodeicd9 = models.CharField(max_length=12, db_column=u'DiagCodeICD9', blank=True, verbose_name='ICD9 Code') # Field name made lowercase.
-    icd9codedscr = models.CharField(max_length=255, db_column=u'ICD9CodeDscr', blank=True, verbose_name='ICD9 Description') # Field name made lowercase.
-    diagcpaa = models.CharField(choices= cpaachoices, max_length=12, db_column=u'DiagCPAA', blank=True, verbose_name='Condition Present at Admission') # Field name made lowercase.
-    proccodeicd9 = models.CharField(max_length=12, db_column=u'ProcCodeICD9', blank=True) # Field name made lowercase.
-    procdate = models.DateTimeField(null=True, db_column=u'ProcDate', blank=True) # Field name made lowercase.
-    ecodeicd9 = models.CharField(max_length=12, db_column=u'ECodeICD9', blank=True) # Field name made lowercase.
-    datacomplete = models.CharField(max_length=12, db_column=u'DataComplete', blank=True) # Field name made lowercase.
-    memo = models.CharField(max_length=255, db_column=u'Memo', blank=True) # Field name made lowercase.
-    diagdatacomplete = models.CharField(max_length=12, db_column=u'DiagDataComplete', blank=True) # Field name made lowercase.
-    physiciannote = models.SmallIntegerField(null=True, db_column=u'PhysicianNote', blank=True) # Field name made lowercase.
-    physiciannotedate = models.DateTimeField(null=True, db_column=u'PhysicianNoteDate', blank=True) # Field name made lowercase.
-    nursenote = models.SmallIntegerField(null=True, db_column=u'NurseNote', blank=True) # Field name made lowercase.
-    nursenotedate = models.DateTimeField(null=True, db_column=u'NurseNoteDate', blank=True) # Field name made lowercase.
-    otherhpnote = models.SmallIntegerField(null=True, db_column=u'OtherHPNote', blank=True) # Field name made lowercase.
-    otherhpnotedate = models.DateTimeField(null=True, db_column=u'OtherHPNoteDate', blank=True) # Field name made lowercase.
-    paramedicnote = models.SmallIntegerField(null=True, db_column=u'ParamedicNote', blank=True) # Field name made lowercase.
-    paramedicnotedate = models.DateTimeField(null=True, db_column=u'ParamedicNoteDate', blank=True) # Field name made lowercase.
-    othernote = models.SmallIntegerField(null=True, db_column=u'OtherNote', blank=True) # Field name made lowercase.
-    othernotedate = models.DateTimeField(null=True, db_column=u'OtherNoteDate', blank=True) # Field name made lowercase.
-    poaukncode = models.CharField(max_length=12, db_column=u'POAUknCode', blank=True) # Field name made lowercase.
-    createdate = models.DateTimeField(null=True, db_column=u'CreateDate', blank=True) # Field name made lowercase.
-    createuid = models.CharField(max_length=12, db_column=u'CreateUID', blank=True) # Field name made lowercase.
-    modifydate = models.DateTimeField(null=True, db_column=u'ModifyDate', blank=True) # Field name made lowercase.
-    modifyuid = models.CharField(max_length=12, db_column=u'ModifyUID', blank=True) # Field name made lowercase.
+    studyid = models.IntegerField(null=True, db_column=u'StudyId', blank=True)
+    codetype = models.CharField(choices= ctypechoices, max_length=12, db_column=u'CodeType', blank=True)
+    codevalue = models.CharField(max_length=12, db_column=u'CodeValue', blank=True)
+    codestatus = models.CharField(choices= cstatchoices, max_length=12, db_column=u'CodeStatus', blank=True, verbose_name='Principal/Other')
+    diagcodeicd9 = models.CharField(max_length=12, db_column=u'DiagCodeICD9', blank=True, verbose_name='ICD9 Code')
+    icd9codedscr = models.CharField(max_length=255, db_column=u'ICD9CodeDscr', blank=True, verbose_name='ICD9 Description')
+    diagcpaa = models.CharField(choices= cpaachoices, max_length=12, db_column=u'DiagCPAA', blank=True, verbose_name='Condition Present at Admission')
+    proccodeicd9 = models.CharField(max_length=12, db_column=u'ProcCodeICD9', blank=True)
+    procdate = models.DateTimeField(null=True, db_column=u'ProcDate', blank=True)
+    ecodeicd9 = models.CharField(max_length=12, db_column=u'ECodeICD9', blank=True)
+    datacomplete = models.CharField(max_length=12, db_column=u'DataComplete', blank=True)
+    memo = models.CharField(max_length=255, db_column=u'Memo', blank=True)
+    diagdatacomplete = models.CharField(max_length=12, db_column=u'DiagDataComplete', blank=True)
+    physiciannote = models.SmallIntegerField(null=True, db_column=u'PhysicianNote', blank=True)
+    physiciannotedate = models.DateTimeField(null=True, db_column=u'PhysicianNoteDate', blank=True)
+    nursenote = models.SmallIntegerField(null=True, db_column=u'NurseNote', blank=True)
+    nursenotedate = models.DateTimeField(null=True, db_column=u'NurseNoteDate', blank=True)
+    otherhpnote = models.SmallIntegerField(null=True, db_column=u'OtherHPNote', blank=True)
+    otherhpnotedate = models.DateTimeField(null=True, db_column=u'OtherHPNoteDate', blank=True)
+    paramedicnote = models.SmallIntegerField(null=True, db_column=u'ParamedicNote', blank=True)
+    paramedicnotedate = models.DateTimeField(null=True, db_column=u'ParamedicNoteDate', blank=True)
+    othernote = models.SmallIntegerField(null=True, db_column=u'OtherNote', blank=True)
+    othernotedate = models.DateTimeField(null=True, db_column=u'OtherNoteDate', blank=True)
+    poaukncode = models.CharField(max_length=12, db_column=u'POAUknCode', blank=True)
+    createdate = models.DateTimeField(null=True, db_column=u'CreateDate', blank=True)
+    createuid = models.CharField(max_length=12, db_column=u'CreateUID', blank=True)
+    modifydate = models.DateTimeField(null=True, db_column=u'ModifyDate', blank=True)
+    modifyuid = models.CharField(max_length=12, db_column=u'ModifyUID', blank=True)
     class Meta:
         db_table = u'ptdetails'
 
 class Ptdiagnoses(models.Model):
     id = models.IntegerField(primary_key=True)
-    studyid = models.IntegerField(null=True, db_column=u'StudyID', blank=True) # Field name made lowercase.
-    diagseq = models.SmallIntegerField(null=True, db_column=u'DiagSeq', blank=True) # Field name made lowercase.
-    diagtype = models.CharField(max_length=12, db_column=u'DiagType', blank=True) # Field name made lowercase.
-    diagcodeicd9oshpd = models.CharField(max_length=12, db_column=u'DiagCodeICD9OSHPD', blank=True) # Field name made lowercase.
-    diagcodeicd9 = models.CharField(max_length=12, db_column=u'DiagCodeICD9', blank=True) # Field name made lowercase.
-    diagcodeicd9dscr = models.CharField(max_length=255, db_column=u'DiagCodeICD9Dscr', blank=True) # Field name made lowercase.
-    diagcrct = models.CharField(max_length=12, db_column=u'Diagcrct', blank=True) # Field name made lowercase.
+    studyid = models.IntegerField(null=True, db_column=u'StudyID', blank=True)
+    diagseq = models.SmallIntegerField(null=True, db_column=u'DiagSeq', blank=True)
+    diagtype = models.CharField(max_length=12, db_column=u'DiagType', blank=True)
+    diagcodeicd9oshpd = models.CharField(max_length=12, db_column=u'DiagCodeICD9OSHPD', blank=True)
+    diagcodeicd9 = models.CharField(max_length=12, db_column=u'DiagCodeICD9', blank=True)
+    diagcodeicd9dscr = models.CharField(max_length=255, db_column=u'DiagCodeICD9Dscr', blank=True)
+    diagcrct = models.CharField(max_length=12, db_column=u'Diagcrct', blank=True)
     cpaa = models.CharField(max_length=12, blank=True)
-    cpaacategory = models.CharField(max_length=12, db_column=u'cpaaCategory', blank=True) # Field name made lowercase.
-    cpaatype = models.CharField(max_length=12, db_column=u'cpaaType', blank=True) # Field name made lowercase.
-    cpaatypeunc = models.SmallIntegerField(null=True, db_column=u'cpaaTypeUnc', blank=True) # Field name made lowercase.
+    cpaacategory = models.CharField(max_length=12, db_column=u'cpaaCategory', blank=True)
+    cpaatype = models.CharField(max_length=12, db_column=u'cpaaType', blank=True)
+    cpaatypeunc = models.SmallIntegerField(null=True, db_column=u'cpaaTypeUnc', blank=True)
     diagsrc = models.CharField(max_length=12, blank=True)
     diagdoc = models.CharField(max_length=12, blank=True)
     diagdate = models.DateTimeField(null=True, blank=True)
-    cpoa_oshpd = models.CharField(max_length=2, db_column=u'cpoa_OSHPD', blank=True) # Field name made lowercase.
-    diagdatacomplete = models.CharField(max_length=12, db_column=u'DiagDataComplete', blank=True) # Field name made lowercase.
-    physiciannote = models.SmallIntegerField(null=True, db_column=u'PhysicianNote', blank=True) # Field name made lowercase.
-    physiciannotedate = models.DateTimeField(null=True, db_column=u'PhysicianNoteDate', blank=True) # Field name made lowercase.
-    nursenote = models.SmallIntegerField(null=True, db_column=u'NurseNote', blank=True) # Field name made lowercase.
-    nursenotedate = models.DateTimeField(null=True, db_column=u'NurseNoteDate', blank=True) # Field name made lowercase.
-    otherhpnote = models.SmallIntegerField(null=True, db_column=u'OtherHPNote', blank=True) # Field name made lowercase.
-    otherhpnotedate = models.DateTimeField(null=True, db_column=u'OtherHPNoteDate', blank=True) # Field name made lowercase.
-    labvaluenote = models.SmallIntegerField(null=True, db_column=u'LabValueNote', blank=True) # Field name made lowercase.
-    labvaluenotedate = models.DateTimeField(null=True, db_column=u'LabValueNoteDate', blank=True) # Field name made lowercase.
-    imagingnote = models.SmallIntegerField(null=True, db_column=u'ImagingNote', blank=True) # Field name made lowercase.
-    imagingnotedate = models.DateTimeField(null=True, db_column=u'ImagingNoteDate', blank=True) # Field name made lowercase.
-    othernote = models.SmallIntegerField(null=True, db_column=u'OtherNote', blank=True) # Field name made lowercase.
-    othernotedate = models.DateTimeField(null=True, db_column=u'OtherNoteDate', blank=True) # Field name made lowercase.
-    memo = models.CharField(max_length=255, db_column=u'Memo', blank=True) # Field name made lowercase.
-    createdate = models.DateTimeField(null=True, db_column=u'CreateDate', blank=True) # Field name made lowercase.
-    createuid = models.CharField(max_length=12, db_column=u'CreateUID', blank=True) # Field name made lowercase.
-    modifydate = models.DateTimeField(null=True, db_column=u'ModifyDate', blank=True) # Field name made lowercase.
-    modifyuid = models.CharField(max_length=12, db_column=u'ModifyUID', blank=True) # Field name made lowercase.
+    cpoa_oshpd = models.CharField(max_length=2, db_column=u'cpoa_OSHPD', blank=True)
+    diagdatacomplete = models.CharField(max_length=12, db_column=u'DiagDataComplete', blank=True)
+    physiciannote = models.SmallIntegerField(null=True, db_column=u'PhysicianNote', blank=True)
+    physiciannotedate = models.DateTimeField(null=True, db_column=u'PhysicianNoteDate', blank=True)
+    nursenote = models.SmallIntegerField(null=True, db_column=u'NurseNote', blank=True)
+    nursenotedate = models.DateTimeField(null=True, db_column=u'NurseNoteDate', blank=True)
+    otherhpnote = models.SmallIntegerField(null=True, db_column=u'OtherHPNote', blank=True)
+    otherhpnotedate = models.DateTimeField(null=True, db_column=u'OtherHPNoteDate', blank=True)
+    labvaluenote = models.SmallIntegerField(null=True, db_column=u'LabValueNote', blank=True)
+    labvaluenotedate = models.DateTimeField(null=True, db_column=u'LabValueNoteDate', blank=True)
+    imagingnote = models.SmallIntegerField(null=True, db_column=u'ImagingNote', blank=True)
+    imagingnotedate = models.DateTimeField(null=True, db_column=u'ImagingNoteDate', blank=True)
+    othernote = models.SmallIntegerField(null=True, db_column=u'OtherNote', blank=True)
+    othernotedate = models.DateTimeField(null=True, db_column=u'OtherNoteDate', blank=True)
+    memo = models.CharField(max_length=255, db_column=u'Memo', blank=True)
+    createdate = models.DateTimeField(null=True, db_column=u'CreateDate', blank=True)
+    createuid = models.CharField(max_length=12, db_column=u'CreateUID', blank=True)
+    modifydate = models.DateTimeField(null=True, db_column=u'ModifyDate', blank=True)
+    modifyuid = models.CharField(max_length=12, db_column=u'ModifyUID', blank=True)
     class Meta:
         db_table = u'ptdiagnoses'
 
@@ -188,10 +188,10 @@ class Ptexclusions(models.Model):
     tox = models.SmallIntegerField(null=True, blank=True)
     tul = models.SmallIntegerField(null=True, blank=True)
     var = models.SmallIntegerField(null=True, blank=True)
-    createdate = models.DateTimeField(null=True, db_column=u'CreateDate', blank=True) # Field name made lowercase.
-    createuid = models.CharField(max_length=12, db_column=u'CreateUID', blank=True) # Field name made lowercase.
-    modifydate = models.DateTimeField(null=True, db_column=u'ModifyDate', blank=True) # Field name made lowercase.
-    modifyuid = models.CharField(max_length=12, db_column=u'ModifyUID', blank=True) # Field name made lowercase.
+    createdate = models.DateTimeField(null=True, db_column=u'CreateDate', blank=True)
+    createuid = models.CharField(max_length=12, db_column=u'CreateUID', blank=True)
+    modifydate = models.DateTimeField(null=True, db_column=u'ModifyDate', blank=True)
+    modifyuid = models.CharField(max_length=12, db_column=u'ModifyUID', blank=True)
     class Meta:
         db_table = u'ptexclusions'
 
@@ -219,11 +219,11 @@ class Ptmaster(models.Model):
 #        return choices        
 #            
     # Yes/No/Missing
-    ynmchoices = Codetbl.get_code_choices('YESNOMISS')    
+    ynmchoices = Codetbl.get_code_choices('YESNOMISS')
         
     # Yes/No/Missing
-    #ynchoices = getchoices('YESNO')  
-    ynchoices = Codetbl.get_code_choices('YESNO')    
+    #ynchoices = getchoices('YESNO')
+    ynchoices = Codetbl.get_code_choices('YESNO')
     
     #ynchoices= (('M', 'Male'),('F', 'Female'), ('U', 'Ukn'))
       
@@ -326,23 +326,23 @@ class Ptmaster(models.Model):
 
 class Zlkpcode(models.Model):
     id = models.IntegerField(primary_key=True)
-    codedispseq = models.SmallIntegerField(null=True, db_column=u'CodeDispSeq', blank=True) # Field name made lowercase.
-    codetype = models.CharField(max_length=12, db_column=u'CodeType', blank=True) # Field name made lowercase.
-    codesubtype = models.CharField(max_length=12, db_column=u'CodeSubType', blank=True) # Field name made lowercase.
-    codeval = models.CharField(max_length=12, db_column=u'CodeVal', blank=True) # Field name made lowercase.
-    codedscr = models.CharField(max_length=80, db_column=u'CodeDscr', blank=True) # Field name made lowercase.
-    active = models.SmallIntegerField(db_column=u'Active') # Field name made lowercase.
+    codedispseq = models.SmallIntegerField(null=True, db_column=u'CodeDispSeq', blank=True)
+    codetype = models.CharField(max_length=12, db_column=u'CodeType', blank=True)
+    codesubtype = models.CharField(max_length=12, db_column=u'CodeSubType', blank=True)
+    codeval = models.CharField(max_length=12, db_column=u'CodeVal', blank=True)
+    codedscr = models.CharField(max_length=80, db_column=u'CodeDscr', blank=True)
+    active = models.SmallIntegerField(db_column=u'Active')
     class Meta:
         db_table = u'zlkpcode'
 
 class Zlogupdates(models.Model):
     id = models.IntegerField(primary_key=True)
-    patientid = models.IntegerField(null=True, db_column=u'PatientID', blank=True) # Field name made lowercase.
-    updatetype = models.CharField(max_length=1, db_column=u'UpdateType', blank=True) # Field name made lowercase.
-    tablename = models.CharField(max_length=12, db_column=u'TableName', blank=True) # Field name made lowercase.
-    tablerecid = models.IntegerField(null=True, db_column=u'TableRecID', blank=True) # Field name made lowercase.
-    uid = models.CharField(max_length=12, db_column=u'UID', blank=True) # Field name made lowercase.
-    updatedate = models.DateTimeField(null=True, db_column=u'UpdateDate', blank=True) # Field name made lowercase.
+    patientid = models.IntegerField(null=True, db_column=u'PatientID', blank=True)
+    updatetype = models.CharField(max_length=1, db_column=u'UpdateType', blank=True)
+    tablename = models.CharField(max_length=12, db_column=u'TableName', blank=True)
+    tablerecid = models.IntegerField(null=True, db_column=u'TableRecID', blank=True)
+    uid = models.CharField(max_length=12, db_column=u'UID', blank=True)
+    updatedate = models.DateTimeField(null=True, db_column=u'UpdateDate', blank=True)
     class Meta:
         db_table = u'zlogupdates'
         
@@ -351,14 +351,14 @@ class Zlogupdates(models.Model):
 class Ptdx(models.Model):
     ptmaster = models.ForeignKey('ptmaster')
     id = models.IntegerField(primary_key=True)
-    studyid = models.IntegerField(null=True,  blank=True) # Field name made lowercase.
-    dxseq = models.SmallIntegerField(null=True,  blank=True) # Field name made lowercase.
-    codetype = models.CharField(max_length=12,  blank=True) # Field name made lowercase.
-    codestatus = models.CharField(max_length=12,  blank=True) # Field name made lowercase.
-    diagcodeicd9 = models.CharField(max_length=12,  blank=True) # Field name made lowercase.
-    icd9codedscr = models.CharField(max_length=255,  blank=True) # Field name made lowercase.
-    diagcpaa = models.CharField(max_length=30,  blank=True) # Field name made lowercase.
-    memo = models.CharField(max_length=255,  blank=True) # Field name made lowercase.    
+    studyid = models.IntegerField(null=True,  blank=True)
+    dxseq = models.SmallIntegerField(null=True,  blank=True)
+    codetype = models.CharField(max_length=12,  blank=True)
+    codestatus = models.CharField(max_length=12,  blank=True)
+    diagcodeicd9 = models.CharField(max_length=12,  blank=False)
+    icd9codedscr = models.CharField(max_length=255,  blank=False)
+    diagcpaa = models.CharField(max_length=30,  blank=True)
+    memo = models.CharField(max_length=255, db_column=u'Memo', blank=False)
     createdate = models.DateTimeField(null=True, blank=True)
     createuser = models.CharField(max_length=20, blank=True)
     modifydate = models.DateTimeField(null=True, blank=True)

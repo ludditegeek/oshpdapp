@@ -202,8 +202,10 @@ def add_dxcode(request, patient_id):
                   
 def edit_ptdetails(request, id):
 
-    # find selected 
+    # find selected entry
     #assert False
+    # Define errors array - append if/when found
+    errors =[]
     ent = get_object_or_404(Ptdx, id = id)
 
     # edit selected ptdtls rec
@@ -214,11 +216,13 @@ def edit_ptdetails(request, id):
         form =  DtlsForm()   
              
     if request.method == 'POST':       
+    # User is modifying form  - check for errors
+
         # Check for possible Cancel Request
         # Test the value of the ['Action'] field
         if request.POST['submit']=='Cancel':
             # return to prev screen
-            #assert False  
+            # assert False  
             # clean up any conf msg
             try:
                  del request.session['confirm']
@@ -229,21 +233,34 @@ def edit_ptdetails(request, id):
         #create and populate a form    
         form =  DtlsForm( data=request.POST, instance=ent)                                          
         if form.is_valid():
+            # Rqd fields are: ICD9 code (via lookup); Memo Field 
+            # these are defined in the form class = *Not in the View*
+            # in models these are defined as Required=False
+
             # ?? Use RE Validation on zip code; MRN ?? 
-            # set error messages here - pass to template
+            # append error messages here - pass to template
+            #assert False
+            errors.append('Form is valid')        
             p = form.save(commit=False)
+            #if 
             p.save()
                 	    
     	    recid = _get_id_from_url(request)    
             # Create a session entry for message and pass on - template should check and display this
             request.session['confirm'] = 'Dx Details Update for record #%s Successful' %recid          
             return HttpResponseRedirect('/dxsearch' )        
-                           
+        else:
+            errors.append('invalid form')
+            #assert False
+            return render_to_response('dx_custom_form.html',
+                                 {'form':form, 'errors':errors}) 
     else:
         form = DtlsForm(instance=ent)  
-                             
+
+    # Need to pass error array here 
+    # Fall thru here if errors are found - pass on to template0
     return render_to_response('dx_custom_form.html',
-                                 {'form':form, 'add':True}) 
+                                 {'form':form, 'errors':errors}) 
                                               
                                                    
 def add_ptdetails(request, pid):
@@ -260,7 +277,7 @@ def add_ptdetails(request, pid):
             # Create new PtDx entry 
             # Init with parent patient id etc.
             # Apply validation rules here - populate error array 
-# for display via template
+            # for display via template
             
             new_dtls = form.save(commit= False)
             new_dtls.ptmaster_id = pid
@@ -275,8 +292,7 @@ def add_ptdetails(request, pid):
         form = DtlsForm(data=request.POST) 
         #form = DtlsForm()  
                                     
-    #return render_to_response('ptdetails_form.html',
-    #                             {'form':form, 'add':True}) 
+    # use custom template to display
     return render_to_response('dx_custom_form.html',
                                  {'form':form, 'add':True}) 
     
