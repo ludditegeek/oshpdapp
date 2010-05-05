@@ -242,7 +242,6 @@ def edit_ptdetails(request, id):
             #assert False
             errors.append('Form is valid')        
             p = form.save(commit=False)
-            #if 
             p.save()
                 	    
     	    recid = _get_id_from_url(request)    
@@ -251,50 +250,52 @@ def edit_ptdetails(request, id):
             return HttpResponseRedirect('/dxsearch' )        
         else:
             errors.append('invalid form')
-            #assert False
-            return render_to_response('dx_custom_form.html',
-                                 {'form':form, 'errors':errors}) 
     else:
         form = DtlsForm(instance=ent)  
 
     # Need to pass error array here 
     # Fall thru here if errors are found - pass on to template0
+    pid = urlparse.urlparse(request.META.get('PATH_INFO', None)).path.split('/')[-1]	            
+    patients = Ptmaster.objects.filter(id__exact=pid)
+    ssn = patients[0].ssn
+    #assert False
     return render_to_response('dx_custom_form.html',
-                                 {'form':form, 'errors':errors}) 
+            {'form':form, 'ssn': ssn, 'errors':errors}) 
                                               
                                                    
 def add_ptdetails(request, pid):
 
-# Create new details entry for the currently selected patient id
-# ?? Pass this as the a session object, rather than via url parm
+    # Add/copy code from edit method to handle errors etc.
+    # current behaviour is inconsistent
+    # Create new details entry for the currently selected patient id
+    # ?? Pass this as the a session object, rather than via url parm
 
+    # Define errors array - append if/when found
+    errors =[]
     if request.method == 'POST':       
-        #create and populate a form    
-        #form =  DtlsForm( data=request.POST, instance=ent)    
         form =  DtlsForm( data=request.POST)    
                       
         if form.is_valid():
-            # Create new PtDx entry 
-            # Init with parent patient id etc.
-            # Apply validation rules here - populate error array 
-            # for display via template
-            
+            #Defer save until we have the required ptmaster id  
             new_dtls = form.save(commit= False)
+    	    pid = _get_id_from_url(request)    
             new_dtls.ptmaster_id = pid
             new_dtls.save()           
 
-            # ?? Where to go after save ??
-            # return HttpResponseRedirect(new_dtls.get_absolute_url()) 
-            # save and return to calling screen
-            return HttpResponseRedirect('/dxsearch')                                              
+            # Create a session entry for message and pass on - template should check and display this
+            request.session['confirm'] = 'Dx Details added successfully'          
+            return HttpResponseRedirect('/dxsearch' )        
+        else:
+            errors.append('invalid form')
     else:
         # Form has errors 
         form = DtlsForm(data=request.POST) 
-        #form = DtlsForm()  
                                     
-    # use custom template to display
+    pid = urlparse.urlparse(request.META.get('PATH_INFO', None)).path.split('/')[-1]	            
+    patients = Ptmaster.objects.filter(id__exact=pid)
+    ssn = patients[0].ssn
     return render_to_response('dx_custom_form.html',
-                                 {'form':form, 'add':True}) 
+            {'form':form, 'ssn': ssn, 'errors':errors}) 
     
         
 def list_abstract(request):

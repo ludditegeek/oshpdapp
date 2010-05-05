@@ -5,17 +5,37 @@
 <div id="frm_abstract">
 </div>
 
-<fieldset>
+<h3>Complete Patient Data Abstraction - Enter Missing Data</h3>
 
-<legend>Patient Admittance Summary</legend>
+{% if form.errors %}
+        <div id="errorExplanation" >
+            <h2>Validation Error(s) found:</h2>
+            <ul>
+            {% if form.abstrec.errors %}
+                {% for error in form.abstrec.errors %}
+                    <li > {{ error|escape }}</li>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.patzip.errors %}
+                {% for error in form.patzip.errors %}
+                    <li > {{ error|escape }}</li>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.memo.errors %}
+                {% for error in form.memo.errors %}
+                    <li >{{ error|escape }}</li>
+                {% endfor %}
+            {% endif %}
+
+           </ul>
+       </div>
+{% endif %}
 
 <form action="" method="post">
-
-    {% if form.errors %}
-        <p style="color: red;">
-            Please correct the error{{ form.errors|pluralize }} below.
-        </p>
-    {% endif %}
+<fieldset>
+    <legend>Patient Admittance Summary (* => required field)</legend>
 
 <table>
       <tr>
@@ -26,9 +46,9 @@
       </tr>
 
       <tr>
-        <th colspan="1"><label for="id_abstrec">MRN:</label></th>
+        <th colspan="1"><label for="id_abstrec">MRN(*):</label></th>
         <td colspan="1" id="id_abstrec">{{form.abstrec}}</td>      
-        <th><label for="id_patzip">Zip Code:</label></th>
+        <th><label for="id_patzip">Zip Code(*):</label></th>
         <td colspan="1" id="id_patzip">{{form.patzip}}</td>     
       </tr>
             
@@ -40,14 +60,14 @@
       </tr>
       
       <tr>
-        <th colspan="1"><label for="id_dnrad">DNR Order at Admission:</label></th>
+        <th colspan="1"><label for="id_dnrad">DNR Order at Admission(*):</label></th>
         <td colspan="1" id="id_dnrad">{{form.dnrad}}</td>      
-        <th><label for="id_crosswalk">Crosswalk:</label></th>
+        <th><label for="id_crosswalk">Crosswalk:(*)</label></th>
         <td colspan="1" id="id_crosswalk">{{form.crosswalk}}</td>     
       </tr>
       
       <tr>
-        <th><label for="id_memo">Memo:</label></th>
+        <th><label for="id_memo">Memo(*):</label></th>
         <td colspan="3" class="memoclass">{{form.memo}}</td>
       </tr>    
       

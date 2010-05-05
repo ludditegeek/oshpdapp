@@ -13,10 +13,10 @@
     font-size:150%; 
     } 
   h2 { 
-    font-size:140%; 
+    font-size:120%; 
     } 
   h3 { 
-    font-size:120%; 
+    font-size:100%; 
     } 
   p { 
     font-size:100%; 
@@ -42,17 +42,17 @@
 /* Content */ 
   #content { 
 	    margin-left:200px; 
-	    margin-right:200px; 
+	    margin-right:150px; 
 	    padding:10px; 
 	    border:0px solid #000; 
-	    width:360px; 
+	    width:410px; 
 	    voice-family:"\"}\""; 
 	    voice-family:inherit; 
-	    width:338px; 
+	    //width:338px; 
 	    } 
 	    
   html>body #content { 
-	    width:338px; 
+	    width:410px; 
 	    } 
 	    
 /* Sidebar A */ 

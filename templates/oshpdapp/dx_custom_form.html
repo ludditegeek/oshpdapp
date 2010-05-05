@@ -17,10 +17,11 @@
 
 {% endblock  %}
 
-
 {% block content %}
 
-    {% if form.non_field_errors %}
+<h3> Add/Edit Diagnostic Data for patient: {{ssn}} </h3>
+
+{% if form.non_field_errors %}
             <p>Non Field Error found</p>
             <p><span class="error">
                 {{ form.non_field_errors|join:", "}}

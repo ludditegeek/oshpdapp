@@ -2,4 +2,7 @@
 *.hg
 *.pyc
 *~
+*.swp
+*.bmp
+*.gif
 

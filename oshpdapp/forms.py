@@ -1,6 +1,7 @@
 from django import forms
 from oshpdapp.models import *
 from django.forms import ModelForm
+from models import *
 
 class   PrescreenForm(forms.ModelForm):
 
@@ -28,7 +29,6 @@ class   PrescreenForm(forms.ModelForm):
             return self.cleaned_data.get('absstatus', None)
 
     #ADM_CHOICES= (('M', 'Male'),('F', 'Female'), ('U', 'Ukn'))
-
 
     memo = forms.CharField(max_length=255,  widget=forms.Textarea)
     # Display Date (w/out time)
@@ -65,7 +65,18 @@ class   AbstractionForm(forms.ModelForm):
             self.fields['ssn'].widget.attrs['readonly'] = True
             self.fields['bthdate'].widget.attrs['readonly'] = True
             
-    memo = forms.CharField(max_length=255,  widget=forms.Textarea)
+    ynchoices = Codetbl.get_code_choices('YESNO')
+    # Define required fields here        
+    memo = forms.CharField(max_length=255,  widget=forms.Textarea,
+            required=True, error_messages={'required':'Memo Field cannot be empty'})
+    abstrec = forms.CharField(max_length=255,  widget=forms.TextInput,
+              required=True, error_messages={'required':'Patient MRN field is required'})
+    patzip = forms.CharField(max_length=255,  widget=forms.TextInput,
+              required=True, error_messages={'required':'ZIP Code field is required'})
+    #codestatus = forms.CharField(max_length=255,  widget=forms.Select(choices=cstatchoices))
+    dnrad = forms.CharField(max_length=255,  widget=forms.Select (choices=ynchoices),
+            required=True, error_messages={'required':'DNR Order at Admission field is required'})
+
     bthdate = forms.DateField(label = 'Date of Birth')    
         
     def clean_absstatus(self):
