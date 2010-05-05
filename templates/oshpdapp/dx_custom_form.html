@@ -30,26 +30,26 @@
                         <p> Non Field error</p>
                     {{ error }}
                 {% endfor %}
-               </p>
+            </p>
     {% endif %}
 
 {% if errors %}
-       <p style="color: red;"> <strong> Validation Error(s) found:</strong> </p>
-    
-    <ol>
-    {% if form.memo.errors %}
-        {% for error in form.memo.errors %}
-            <li style="color: red;"><strong> {{ error|escape }}</strong></li>
-        {% endfor %}
-    {% endif %}
+        <div id="errorExplanation" >
+            <h2>Validation Error(s) found:</h2>
+            <ul>
+            {% if form.memo.errors %}
+                {% for error in form.memo.errors %}
+                    <li >{{ error|escape }}</li>
+                {% endfor %}
+            {% endif %}
 
-    {% if form.diagcodeicd9.errors %}
-        {% for error in form.diagcodeicd9.errors %}
-            <li style="color: red;"><strong> {{ error|escape }}</strong></li>
-        {% endfor %}
-    {% endif %}
-    </ol>
-
+            {% if form.diagcodeicd9.errors %}
+                {% for error in form.diagcodeicd9.errors %}
+                    <li > {{ error|escape }}</li>
+                {% endfor %}
+            {% endif %}
+            </ul>
+       </div>
 {% endif %}
 
 <form method="post" action=""> 
