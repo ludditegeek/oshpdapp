@@ -3,10 +3,14 @@ table  {
     border-color: blue; 
     border-style: solid;  
     padding: 2px;
+    color: white;
     //border-collapse: collapse;
     //background-color: #FF0;
     //background-color: aqua;
-    background-color: #D2FFD2;
+    //background-color: #D2FFD2;
+    //background-color: #618C04;
+    //background-color: #618C04;
+    background-color: #77B003;
     //width: 500px;
 
 }
@@ -23,7 +27,9 @@ th, td {
     border-style: solid;  
     padding: 2px;
     border-collapse: collapse;
-    background-color: #D2FFD2;
+    //background-color: #D2FFD2;
+    background-color: #77B003;
+    color: white;
 
 }
 
@@ -40,6 +46,10 @@ th, td {
     //border-collapse: collapse;
     //border-width: 5px;
     padding: 5px;    
+}
+
+.sresults a {
+    color: blue;
 }
 
 label {
@@ -61,20 +71,29 @@ border-radius: 5px;
 
 fieldset{
 	//background-color:#fff9e7;
+	//background-color:#8A8A8A;
+	background-color:#E1E1E1;
+
 	border: 1px black solid;
     border-radius: 5px; 	
 	border-width:1px;
-	border-style:solid;
+	//border-style:solid;
 	//border-color:#7c5b47;
 	
 	//font-family:Verdana, Arial, Helvetica, sans-serif;
-	//font-size:12px;
 		
 	margin:20px 0px 20px 0px;
-	position:relative;
-	display:block;
+	//position:relative;
+	//display:block;
 	padding: 10px 10px 10px 10px;
 }
+
+fieldset legend {
+    font-style: bold;
+	font-size:20px;
+    color:#77B003;
+}
+
           
 #frm_abstract {
 <div id="frm_abstract">

@@ -13,7 +13,6 @@
   <script type="text/javascript"
     src="/site_media/gen_search.js"></script>
 
-  <link rel='stylesheet' type="text/css" media="screen" href="/site_media/css/switch.css"/>
 
 {% endblock %}
 {% block title %}Search Patients{% endblock %}
@@ -27,11 +26,10 @@
 <p/>
     {% if error %}
         <p style="color: red;">Please submit a search term.</p>
-    {% endif %}
-
-<fieldset>
+        {% endif %}
+ <fieldset style="width:300px;">
 <legend>Search by Patient SSN</legend>
-<form id="search-form" class = "search" method="get" action=".">
+<form id="search-form" class = "frmsearch" method="get" action=".">
 
     {% ifequal caller 'dx' %}
          Find patient diagnostic, procedure and Ecode entries
@@ -48,7 +46,7 @@
    </tr>   
   </table> 
 </form>
-</fieldset>
+</fieldset>`
 
 <div id="search-results">
   {% if show_results %}
@@ -65,3 +63,5 @@
 </div>
 
 {% endblock %}
+
+
