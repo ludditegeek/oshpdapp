@@ -82,7 +82,6 @@
       <tr>
         <th><label for="id_diagcodeicd9">ICD9 Code(*):</label></th>
         <td>{{form.diagcodeicd9}}</td>
-        <td class="tblerr">{{form.diagcodeicd9.errors}}</td>
       </tr>
       <tr>
         <th><label for="id_icd9codedscr">ICD9 Description(*):</label></th>
@@ -91,7 +90,6 @@
       <tr>
         <th><label for="id_memo">Memo(*):</label></th>
         <td>{{form.memo}}</td>
-        <td class="tblerr">{{form.memo.errors}}</td>
       </tr>
     </tbody>
   </table>
@@ -102,6 +100,29 @@
   <input name="submit" value="Cancel" type="submit">
   </p>
 
+<fieldset style="width:550px;">
+<legend>Current Patient Dx Status</legend>
+    <table style="width:550px;" class="sresults" >
+	<tr>  
+           <th>ssn</th>
+           <th>code type</th> 
+           <th>code status</th>           
+           <th>code dscr</th> 
+           <th>dx date</th> 
+	</tr>
+        {% for item in dxcodes %}
+        <tr>
+           <td>{{ item.ptmaster.ssn }}</td>
+           <td>{{ item.codetype }}</td> 
+           <td>{{ item.codestatus }}</td> 
+           <td>{{ item.icd9codedscr }}</td> 
+           <td>{{ item.createdate.date }}</td> 
+ 	</tr>
+        {% endfor %}
+    </>
+    </table>
+    <p/>
+</fieldset>
 </form>
 
 {% endblock %}

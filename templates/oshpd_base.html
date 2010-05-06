@@ -25,21 +25,20 @@ Released   : 20091102
 </head>
 <body>
 	<div id="logo">
-		<h1>OSHPD Database - powered by  
+		<h1>OSHPD Data Collection - powered by  
         <a href="http://www.djangoproject.com/"><img src="/site_media/css/solutions/images/django_logo.gif"/></a></h1>
-        <p><em> MS Access to Django db Conversion Project</em></p>
+        <p><em> Converting a database from MS Access to Django/Sqllite</em></p>
 	</div>
 	<hr />
 	<!-- end #logo -->
 	<div id="header">
 		<div id="menu">
 			<ul>
-				<li><a href="/" class="first">About</a></li>
 				<li class="current_page_item"><a href="/">Summary</a></li>
 				<li class="current_page_item"><a href="/prsearch">Prescreen</a></li>
                 <li class="current_page_item"><a href="/abstract">Abstraction</a></li>
                 <li class="current_page_item"><a href="/dxsearch">Diagnosis</a></li>
-				<li><a href="#">Contact</a></li>
+				<li><a href="/" class="first">About</a></li>
 			</ul>
 		</div>
 		<!-- end #menu -->
@@ -55,12 +54,12 @@ Released   : 20091102
         {% block extra_body %}{% endblock  %}    
 		</div><!-- end #content -->
 		<div id="sidebar">
+            {% block sidebar %}{% endblock  %}    
             <p> Add summary notes re purpose of each screen - 
             Substitute  variable block info based on screen</p>
             <p> Prescreen </p>
             <p> Abstraction</p>
             <p> Diagnosis</p>
-
 		</div>
 		<!-- end #sidebar -->
 		<div style="clear: both;">&nbsp;</div>

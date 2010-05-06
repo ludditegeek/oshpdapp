@@ -13,6 +13,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
+import datetime
+
 
 # Parse URL - will extract PID 
 import urlparse
@@ -255,12 +257,24 @@ def edit_ptdetails(request, id):
 
     # Need to pass error array here 
     # Fall thru here if errors are found - pass on to template0
-    pid = urlparse.urlparse(request.META.get('PATH_INFO', None)).path.split('/')[-1]	            
+    
+    # For edit - need to get the PID from the URL Recid 
+    # For add the PID is in the URL
+    
+
+    rid = urlparse.urlparse(request.META.get('PATH_INFO', None)).path.split('/')[-1]	            
+    # Returns query object
+    dxlist = Ptdx.objects.filter(id__exact=rid)
+    # Extract model object - retrieve data
+    pid = dxlist[0].ptmaster_id
     patients = Ptmaster.objects.filter(id__exact=pid)
     ssn = patients[0].ssn
+    # retrieve list of current dx recs for patient
+    dxcodes = Ptdx.objects.filter(ptmaster__id__exact=pid).order_by('ptmaster__ssn') 
+    #dxcodes = Ptdx.objects.filter(ptmaster__ssn__exact=ssn).order_by('ptmaster__ssn') 
     #assert False
     return render_to_response('dx_custom_form.html',
-            {'form':form, 'ssn': ssn, 'errors':errors}) 
+            {'form':form, 'ssn': ssn, 'dxcodes': dxcodes, 'errors':errors}) 
                                               
                                                    
 def add_ptdetails(request, pid):
@@ -273,6 +287,18 @@ def add_ptdetails(request, pid):
     # Define errors array - append if/when found
     errors =[]
     if request.method == 'POST':       
+        # Check for possible Cancel Request
+        # Test the value of the ['Action'] field
+        if request.POST['submit']=='Cancel':
+            # return to prev screen
+            # assert False  
+            # clean up any conf msg
+            try:
+                 del request.session['confirm']
+            except (KeyError, ValueError):
+                pass            
+            return HttpResponseRedirect('/dxsearch') 
+
         form =  DtlsForm( data=request.POST)    
                       
         if form.is_valid():
@@ -280,6 +306,7 @@ def add_ptdetails(request, pid):
             new_dtls = form.save(commit= False)
     	    pid = _get_id_from_url(request)    
             new_dtls.ptmaster_id = pid
+            new_dtls.createdate = datetime.datetime.now()
             new_dtls.save()           
 
             # Create a session entry for message and pass on - template should check and display this
@@ -291,11 +318,15 @@ def add_ptdetails(request, pid):
         # Form has errors 
         form = DtlsForm(data=request.POST) 
                                     
+    # Add summary view to the form  display summary of existing recs
+
+
     pid = urlparse.urlparse(request.META.get('PATH_INFO', None)).path.split('/')[-1]	            
     patients = Ptmaster.objects.filter(id__exact=pid)
     ssn = patients[0].ssn
+    dxcodes = Ptdx.objects.filter(ptmaster__ssn__startswith=ssn).order_by('ptmaster__ssn') 
     return render_to_response('dx_custom_form.html',
-            {'form':form, 'ssn': ssn, 'errors':errors}) 
+            {'form':form, 'ssn': ssn, 'dxcodes': dxcodes, 'errors':errors}) 
     
         
 def list_abstract(request):
