@@ -75,9 +75,49 @@ MIDDLEWARE_CLASSES = (
      #  new messages middleware (Django V1.1.1)
     #'django.contrib.sessions.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+   # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'devserver.middleware.DevServerMiddleware',
 )
 
 ROOT_URLCONF = 'webapps.urls'
+
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+)
+
+
+def custom_show_toolbar(request):
+    return True # Always show toolbar, for example purposes only.
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': True,
+    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+    'HIDE_DJANGO_SQL': False,
+    'TAG': 'body',
+}
+
+INTERNAL_IPS = ('127.0.0.1',
+)
+
+DEVSERVER_MODULES = (
+    'devserver.modules.sql.SQLRealTimeModule',
+    'devserver.modules.sql.SQLSummaryModule',
+    'devserver.modules.profile.ProfileSummaryModule',
+
+    # Modules not enabled by default
+    'devserver.modules.ajax.AjaxDumpModule',
+    #'devserver.modules.profile.MemoryUseModule',
+    'devserver.modules.cache.CacheSummaryModule',
+)
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -98,7 +138,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     # new messages middleware 
-    #'django.contrib.messages',   
+    #'django.contrib.messages',A
+    #'debug_toolbar',
+    'devserver',
     'webapps.oshpdapp',
     'webapps.lgapp',
 )
